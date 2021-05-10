@@ -1,4 +1,4 @@
-package isep.webtechnologies.homekeep.models;
+package isep.webtechnologies.homekeep.models.user;
 
 import org.springframework.data.repository.CrudRepository;
 
