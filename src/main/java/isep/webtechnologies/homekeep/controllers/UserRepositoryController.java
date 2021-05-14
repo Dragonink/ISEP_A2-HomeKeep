@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,18 +24,6 @@ public class UserRepositoryController {
 	@Autowired
 	private UserRepository repository;
 
-	@GetMapping
-	public @ResponseBody Iterable<User> getAllUsers() {
-		return repository.findAll();
-	}
-
-	@GetMapping(path = "/{id}")
-	public @ResponseBody Optional<User> getUserById(
-		@PathVariable Integer id
-	) {
-		return repository.findById(id);
-	}
-
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody User addUser(
@@ -49,6 +36,21 @@ public class UserRepositoryController {
 	) {
 		User user = new User(email, password, firstname, lastname, address, country);
 		return repository.save(user);
+	}
+
+	@PostMapping(path = "/login")
+	public @ResponseBody Optional<User> testUserLogin(
+		@RequestParam("email") String email,
+		@RequestParam("password") String password
+	) {
+		return repository.findByEmail(email)
+			.map(user -> {
+				if (user.comparePassword(password)) {
+					return user;
+				} else {
+					return null;
+				}
+			});
 	}
 
 	@PatchMapping(path = "/{id}")
