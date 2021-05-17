@@ -2,6 +2,7 @@ package isep.webtechnologies.homekeep.models.user;
 
 import java.sql.Blob;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -19,12 +20,14 @@ import javax.persistence.UniqueConstraint;
 import isep.webtechnologies.homekeep.models.house.House;
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.house.HouseRating;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(uniqueConstraints = {
 	@UniqueConstraint(columnNames = {"email"})
 })
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -44,8 +47,44 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		//required by UserDetails for authentication but email is used instead
+		return firstname + " " + lastname;
+	}
+
 	public Boolean comparePassword(String password) {
 		return this.password.equals(password);
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return false;
 	}
 
 	private String firstname;
