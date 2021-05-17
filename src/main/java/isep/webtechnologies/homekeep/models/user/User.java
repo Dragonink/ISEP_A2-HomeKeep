@@ -60,7 +60,7 @@ public class User implements UserDetails {
 	@Override
 	public String getUsername() {
 		//required by UserDetails for authentication but email is used instead
-		return firstname + " " + lastname;
+		return email;
 	}
 
 	public Boolean comparePassword(String password) {
