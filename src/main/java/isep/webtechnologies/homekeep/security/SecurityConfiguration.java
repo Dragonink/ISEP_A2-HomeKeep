@@ -31,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/ad_details").permitAll()
+                .antMatchers("/", "/ad_details", "/registration", "/api/users").permitAll()
                 .anyRequest().authenticated();
     }
     //TODO add constants for public/private pages ?

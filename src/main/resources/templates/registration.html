@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/api/users}" method="post">
+        <h1>Registration Page</h1>
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="firstname" autofocus="autofocus"/>
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname"/>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email"/>
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address"/>
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country"/>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"/>
+        <input id="submit" type="submit" value="Submit"/>
+    </form>
+</div>
+</body>
+</html>
