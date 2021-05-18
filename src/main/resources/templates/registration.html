@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/registration.js}"></script>
 </head>
 <body>
 <div class="container">
-    <form th:action="@{/api/users}" method="post">
+    <form id="registration-form" th:action="@{/api/users}" method="post">
         <h1>Registration Page</h1>
         <label for="firstname">First Name</label>
         <input type="text" id="firstname" name="firstname" autofocus="autofocus"/>

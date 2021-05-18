@@ -21,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authenticationProvider(new AppAuthProvider(userDetailsService))
                 .formLogin()
                 .loginProcessingUrl("/login")
@@ -31,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/ad_details", "/registration", "/api/users").permitAll()
+                .antMatchers("/", "/ad_details", "/registration").permitAll()
                 .anyRequest().authenticated();
     }
     //TODO add constants for public/private pages ?
