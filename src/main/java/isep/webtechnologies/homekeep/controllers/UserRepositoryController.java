@@ -53,7 +53,7 @@ public class UserRepositoryController {
 			});
 	}
 
-	@PatchMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}", consumes = {"multipart/form-data"})
 	public @ResponseBody Optional<User> editUser(
 		@PathVariable Integer id,
 		@RequestParam("email") Optional<String> email,
