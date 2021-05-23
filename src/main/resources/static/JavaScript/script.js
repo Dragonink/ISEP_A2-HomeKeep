@@ -49,25 +49,22 @@ function today(){
     document.getElementById('to').value = today;
 }   
 
-function counter(){
-    $(document).ready(function(){
-        $("#plus").on("click", function(){
-            var people = $("#voyagers").val()
-            people = parseInt(people) + 1
-            if(people >= 2){
-                $("#minus").show()
-            }
-            $("#voyagers").val(people)
-        }) 
-        $("#minus").on("click", function(){
-            var people = $("#voyagers").val()
-            people = parseInt(people) - 1
-            $("#voyagers").val(people)
-            if(people < 2){
-                $("#minus").hide()
-            }
-        })    
-    })
+function counterPlus(){
+    var people = $("#voyagers").val()
+    people = parseInt(people) + 1
+    if(people >= 2){
+        $("#minus").show()
+    }
+    $("#voyagers").val(people)
+}
+
+function counterMinus(){
+    var people = $("#voyagers").val()
+    people = parseInt(people) - 1
+    $("#voyagers").val(people)
+    if(people < 2){
+        $("#minus").hide()
+    }
 }
 
 function showFilters(){

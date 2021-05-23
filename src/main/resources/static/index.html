@@ -12,7 +12,7 @@
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
         <title>HomeKeep</title>
     </head>
-    <body onload="datePicker();today();counter();toggleMinus()">
+    <body onload="datePicker();today()">
         <h1>Welcome to HomeKeep!</h1>
         <form name = "searchForm">
             <div class = "topdiv">
@@ -34,27 +34,27 @@
                 <div>
                     <label for = "voyagers"> Number of voyagers</label>
                     <input type = "text" id = "voyagers" class = "voyagers" value = "1" readonly>
-                    <button class = "counter" type = "button" id = "minus" onclick = "toggleMinus()"><i class = "fas fa-minus"></i></button>
-                    <button class = "counter" type = "button" id = "plus" onclick = "toggleMinus()"><i class = "fas fa-plus"></i></button>
+                    <button class = "counter" type = "button" id = "minus" onclick = "counterMinus()"><i class = "fas fa-minus"></i></button>
+                    <button class = "counter" type = "button" id = "plus" onclick = "counterPlus()"><i class = "fas fa-plus"></i></button>
                 </div>
                 <div class = "filterdiv">
                     <button type = "button" class = "filters" onclick="showFilters()">Filters</button>
                 </div>
                 <div id = "checkboxes" class = "container checkboxes"> 
                     <ul class="checkbox-grid">
-                        <li><input type = "checkbox" id = "parking" name = "parking" value = "parking"> <label class = "fltrs" for = "parking">Parking</label></li>
-                        <li><input type = "checkbox" id = "heating" name = "heating" value = "heating"> <label class = "fltrs" for = "heating">Heating System</label></li>
-                        <li><input type = "checkbox" id = "cooling" name = "cooling" value = "cooling"> <label class = "fltrs" for = "cooling">Cooling System</label></li>
-                        <li><input type = "checkbox" id = "shower" name = "shower" value = "shower"> <label class = "fltrs" for = "shower">Shower</label></li>
-                        <li><input type = "checkbox" id = "fridge" name = "fridge" value = "fridge"> <label class = "fltrs" for = "fridge">Fridge</label></li>
-                        <li><input type = "checkbox" id = "freezer" name = "freezer" value = "freezer"> <label class = "fltrs" for = "freezer">Freezer</label></li>
-                        <li><input type = "checkbox" id = "microwave" name = "microwave" value = "microwave"> <label class = "fltrs" for = "microwave">Parking</label></li>
-                        <li><input type = "checkbox" id = "oven" name = "oven" value = "oven"> <label class = "fltrs" for = "oven">Oven</label></li>
-                        <li><input type = "checkbox" id = "barbecue" name = "barbecue" value = "barbecue"> <label class = "fltrs" for = "barbecue">Barbecue</label></li>
-                        <li><input type = "checkbox" id = "dishwasher" name = "dishwasher" value = "dishwasher"> <label class = "fltrs" for = "dishwasher">Dishwasher</label></li>
-                        <li><input type = "checkbox" id = "wmachine" name = "wmachine" value = "wmachine"> <label class = "fltrs" for = "wmachine">Washing Machine</label></li>
-                        <li><input type = "checkbox" id = "pool" name = "" value = "pool"> <label class = "fltrs" for = "pool">Swimming Pool</label></li>
-                        <li><input type = "checkbox" id = "disabled" name = "disabled" value = "disabled"> <label class = "fltrs" for = "disabled">Disabled Access</label></li>                        
+                        <li><input type = "checkbox" id = "parking" name = "advFilters" value = "parking"> <label class = "fltrs" for = "parking">Parking</label></li>
+                        <li><input type = "checkbox" id = "heating" name = "advFilters" value = "heating"> <label class = "fltrs" for = "heating">Heating System</label></li>
+                        <li><input type = "checkbox" id = "cooling" name = "advFilters" value = "cooling"> <label class = "fltrs" for = "cooling">Cooling System</label></li>
+                        <li><input type = "checkbox" id = "shower" name = "advFilters" value = "shower"> <label class = "fltrs" for = "shower">Shower</label></li>
+                        <li><input type = "checkbox" id = "fridge" name = "advFilters" value = "fridge"> <label class = "fltrs" for = "fridge">Fridge</label></li>
+                        <li><input type = "checkbox" id = "freezer" name = "advFilters" value = "freezer"> <label class = "fltrs" for = "freezer">Freezer</label></li>
+                        <li><input type = "checkbox" id = "microwave" name = "advFilters" value = "microwave"> <label class = "fltrs" for = "microwave">Parking</label></li>
+                        <li><input type = "checkbox" id = "oven" name = "advFilters" value = "oven"> <label class = "fltrs" for = "oven">Oven</label></li>
+                        <li><input type = "checkbox" id = "barbecue" name = "advFilters" value = "barbecue"> <label class = "fltrs" for = "barbecue">Barbecue</label></li>
+                        <li><input type = "checkbox" id = "dishwasher" name = "advFilters" value = "dishwasher"> <label class = "fltrs" for = "dishwasher">Dishwasher</label></li>
+                        <li><input type = "checkbox" id = "wmachine" name = "advFilters" value = "wmachine"> <label class = "fltrs" for = "wmachine">Washing Machine</label></li>
+                        <li><input type = "checkbox" id = "pool" name = "advFilters" value = "pool"> <label class = "fltrs" for = "pool">Swimming Pool</label></li>
+                        <li><input type = "checkbox" id = "disabled" name = "advFilters" value = "disabled"> <label class = "fltrs" for = "disabled">Disabled Access</label></li>                        
                     </ul>
                 </div>
             </div>
@@ -73,7 +73,12 @@
                 </div>
             </div>
             <div>
-                <img src = "/Images/Profile.png" width = "200px">
+            	<div class = "profileDiv">
+	                <img class = "profileImg" src = "/Images/Profile.png">
+	            </div>
+	            <div>
+	            	<button class = "profileButton">Profile</button>
+	            </div>
             </div>
         </div>
     </body>

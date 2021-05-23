@@ -142,6 +142,7 @@ li{
 .counter {
     border: none;
     background-color: white;
+    cursor: pointer;
 }
 
 .counter:focus {
@@ -173,6 +174,15 @@ h2 {
 
 .placeimg {
     border: 1px solid black;
+}
+
+.profileImg {
+	width: 50%;
+	border-radius: 50%;
+}
+
+.profileDiv {
+	margin-top: 4px;
 }
 
 .reserve{
@@ -212,3 +222,40 @@ h2 {
 
 }
 
+
+.profileButton{
+    width: 15%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #3399ff;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.8em;
+    padding: 0.5rem;
+    border: 0.5px solid grey;
+    transition: all 0.5s;
+    border-radius: 10px;
+    width: auto;
+    position: relative;
+}
+.profileButton::after {
+    content: "\f2bd";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 68%;
+    top: 33.5%;
+    opacity: 0;
+
+}
+
+.profileButton:hover {
+    background: blue;
+    transition: all 0.5s;
+    border-radius: 10px;
+    padding: 0.7rem 2.5rem 0.7rem 0.7rem;
+}
+.profileButton:hover::after {
+    opacity: 1;
+    transition: all 0.5s;
+
+}
