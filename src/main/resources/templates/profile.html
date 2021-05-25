@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+</head>
+<body>
+<div class="container">
+    <!--/*@thymesVar id="user" type="isep.webtechnologies.homekeep.models.user.User"*/-->
+    <form id="edit-form" th:action="${'/api/users/'+user.id}" th:object="${user}">
+        <h1>Profile Page</h1>
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="firstname" th:value="${user.firstname}" autofocus="autofocus"/>
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname" th:value="${user.lastname}"/>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" th:value="${user.email}"/>
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" th:value="${user.address}"/>
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" th:value="${user.country}"/>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" th:value="${user.password}"/>
+        <input id="submit" type="submit" value="Submit"/>
+    </form>
+</div>
+</body>
+</html>
