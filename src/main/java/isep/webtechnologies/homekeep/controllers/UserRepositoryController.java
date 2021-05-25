@@ -24,7 +24,7 @@ public class UserRepositoryController {
 	@Autowired
 	private UserRepository repository;
 
-	@PostMapping
+	@PostMapping(consumes = {"multipart/form-data"})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody User addUser(
 		@RequestParam("email") String email,

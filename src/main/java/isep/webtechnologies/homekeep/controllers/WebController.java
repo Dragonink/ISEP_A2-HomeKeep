@@ -14,4 +14,9 @@ public class WebController {
         model.addAttribute("user",currentUser);
         return "/profile";
     }
+    
+    @RequestMapping("/registration")
+    public String registration() {
+        return "/registration";
+    }
 }
