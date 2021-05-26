@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script th:src="@{/js/index.js}"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+    <title>HomeKeep</title>
+</head>
+
+<body onload="initForm();">
+    <h1>Welcome to HomeKeep!</h1>
+    <form id="search-houses" th:action="@{/api/houses/search}" th:object="${search}">
+        <div>
+            <input name="title" type="text" placeholder="Where would you like to go ?" autofocus />
+            <button type="submit">
+                <span class="fa fa-search"></span>
+                Search
+            </button>
+        </div>
+        <fieldset>
+            <legend>Travel dates</legend>
+            <label>
+                From
+                <input name="startDate" type="date" />
+            </label>
+            <label>
+                To
+                <input name="endDate" type="date" />
+            </label>
+        </fieldset>
+        <fieldset>
+            <legend>Travelers</legend>
+            <label>
+                Number of persons
+                <input name="persons" type="number" min="1" value="1" />
+            </label>
+            <label>
+                Number of babies
+                <input name="babies" type="number" value="0" />
+            </label>
+        </fieldset>
+    </form>
+    <output form="search-houses" th:if="${not #lists.isEmpty(search)}">
+        <table>
+            <tr th:each="house : ${search}">
+                <th th:text="${house.title}"></th>
+            </tr>
+        </table>
+    </output>
+    <!-- <form name="searchForm">
+
+        <div class="selection">
+
+            <div class="filterdiv">
+                <button type="button" class="filters" onclick="showFilters()">Filters</button>
+            </div>
+            <div id="checkboxes" class="container checkboxes">
+                <ul class="checkbox-grid">
+                    <li><input type="checkbox" id="parking" name="advFilters" value="parking"> <label class="fltrs" for="parking">Parking</label></li>
+                    <li><input type="checkbox" id="heating" name="advFilters" value="heating"> <label class="fltrs" for="heating">Heating System</label></li>
+                    <li><input type="checkbox" id="cooling" name="advFilters" value="cooling"> <label class="fltrs" for="cooling">Cooling System</label></li>
+                    <li><input type="checkbox" id="shower" name="advFilters" value="shower"> <label class="fltrs" for="shower">Shower</label></li>
+                    <li><input type="checkbox" id="fridge" name="advFilters" value="fridge"> <label class="fltrs" for="fridge">Fridge</label></li>
+                    <li><input type="checkbox" id="freezer" name="advFilters" value="freezer"> <label class="fltrs" for="freezer">Freezer</label></li>
+                    <li><input type="checkbox" id="microwave" name="advFilters" value="microwave"> <label class="fltrs" for="microwave">Parking</label></li>
+                    <li><input type="checkbox" id="oven" name="advFilters" value="oven"> <label class="fltrs" for="oven">Oven</label></li>
+                    <li><input type="checkbox" id="barbecue" name="advFilters" value="barbecue"> <label class="fltrs" for="barbecue">Barbecue</label></li>
+                    <li><input type="checkbox" id="dishwasher" name="advFilters" value="dishwasher"> <label class="fltrs" for="dishwasher">Dishwasher</label></li>
+                    <li><input type="checkbox" id="wmachine" name="advFilters" value="wmachine"> <label class="fltrs" for="wmachine">Washing Machine</label></li>
+                    <li><input type="checkbox" id="pool" name="advFilters" value="pool"> <label class="fltrs" for="pool">Swimming Pool</label></li>
+                    <li><input type="checkbox" id="disabled" name="advFilters" value="disabled"> <label class="fltrs" for="disabled">Disabled Access</label></li>
+                </ul>
+            </div>
+        </div>
+    </form> -->
+</body>
+
+</html>
