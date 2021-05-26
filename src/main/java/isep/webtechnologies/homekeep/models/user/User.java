@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import isep.webtechnologies.homekeep.models.house.House;
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.house.HouseRating;
@@ -147,12 +149,14 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKey(name = "house")
 	private Map<House,HouseRating> ratings;
+	@JsonIgnore
 	public Map<House,HouseRating> getRatings() {
 		return ratings;
 	}
 
 	@OneToMany(mappedBy = "booker", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<HouseBooking> bookings;
+	@JsonIgnore
 	public Set<HouseBooking> getBookings() {
 		return bookings;
 	}

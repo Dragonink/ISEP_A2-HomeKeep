@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import isep.webtechnologies.homekeep.models.user.User;
 
 @Entity
@@ -20,6 +22,7 @@ public class HouseRating {
 
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private House house;
+	@JsonIgnore
 	public House getHouse() {
 		return house;
 	}

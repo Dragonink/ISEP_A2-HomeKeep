@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class HouseImage {
 	@Id
@@ -21,6 +23,7 @@ public class HouseImage {
 
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private House house;
+	@JsonIgnore
 	public House getHouse() {
 		return house;
 	}
