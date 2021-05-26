@@ -1,27 +1,45 @@
 package isep.webtechnologies.homekeep.models.house;
 
 import java.sql.Date;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface HouseRepository extends CrudRepository<House, Integer> {
-	@Query(value = "SELECT h FROM House h WHERE h.title LIKE '%?1%'")
-	Iterable<House> searchByTitle(String title);
-
-	default Iterable<House> searchByDate(Date startDate, Date endDate) {
+	default Iterable<House> searchByTitle(Optional<String> title) {
 		return () -> StreamSupport.stream(this.findAll().spliterator(), false)
-			.filter(house -> house.getBookings().stream()
-				.filter(booking -> booking.isAvailable())
-				.anyMatch(booking -> booking.getStartDate().compareTo(startDate) <= 0 && booking.getEndDate().compareTo(endDate) >= 0)
+			.filter(house -> title
+				.map(str -> house.getTitle().contains(str))
+				.orElse(true)
 			)
 			.iterator();
 	}
 
-	default Iterable<House> searchByPersonNumber(Integer persons, Integer babies) {
+	default Iterable<House> searchByDate(Optional<Date> startDate, Optional<Date> endDate) {
 		return () -> StreamSupport.stream(this.findAll().spliterator(), false)
-			.filter(house -> house.getAmenities().getBeds() + 2 * house.getAmenities().getDoubleBeds() >= persons && house.getAmenities().getBabyBeds() >= babies)
+			.filter(house -> house.getBookings().size() == 0 || house.getBookings().stream().anyMatch(booking ->
+				booking.isAvailable() &&
+				startDate
+					.map(date -> booking.getStartDate().compareTo(date) <= 0)
+					.orElse(true) &&
+				endDate
+					.map(date -> booking.getEndDate().compareTo(date) >= 0)
+					.orElse(true)
+			))
+			.iterator();
+	}
+
+	default Iterable<House> searchByPersonNumber(Optional<Integer> persons, Optional<Integer> babies) {
+		return () -> StreamSupport.stream(this.findAll().spliterator(), false)
+			.filter(house -> Optional.ofNullable(house.getAmenities()).map(amenities ->
+				persons
+					.map(number -> Optional.ofNullable(amenities.getBeds()).orElse(0) + 2 * Optional.ofNullable(amenities.getDoubleBeds()).orElse(0) >= number)
+					.orElse(true) &&
+				babies
+					.map(number -> Optional.ofNullable(amenities.getBabyBeds()).orElse(0) >= number)
+					.orElse(true)
+			).orElse(true))
 			.iterator();
 	}
 }
