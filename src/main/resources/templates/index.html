@@ -2,17 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-    <script th:src="@{/js/index.js}"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>HomeKeep</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
 
 <body onload="initForm();">
+<header th:replace="global :: header"></header>
     <h1>Welcome to HomeKeep!</h1>
     <form id="search-houses" th:action="@{/api/houses/search}" th:object="${search}">
         <div>
