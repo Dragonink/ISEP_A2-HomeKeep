@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.user.Message;
 import isep.webtechnologies.homekeep.models.user.MessageRepository;
 import isep.webtechnologies.homekeep.models.user.User;
@@ -34,9 +35,10 @@ public class MessageRepositoryController {
 	public @ResponseBody Message addMessage(
 		@RequestParam("sender") User sender,
 		@RequestParam("recipient") User recipient,
-		@RequestParam("content") String content
+		@RequestParam("content") String content,
+		@RequestParam("booking") HouseBooking booking
 	) {
-		Message message = new Message(sender, recipient, content);
+		Message message = new Message(sender, recipient, content, booking);
 		return repository.save(message);
 	}
 

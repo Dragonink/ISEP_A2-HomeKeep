@@ -1,6 +1,7 @@
 package isep.webtechnologies.homekeep.models.user;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import isep.webtechnologies.homekeep.models.house.HouseBooking;
 
 @Entity
 public class Message {
@@ -31,8 +35,14 @@ public class Message {
 	}
 
 	private String content;
-	public String getContent() {
-		return content;
+	public Optional<String> getContent() {
+		return Optional.ofNullable(content);
+	}
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private HouseBooking booking;
+	public Optional<HouseBooking> getBooking() {
+		return Optional.ofNullable(booking);
 	}
 
 	private Date date;
@@ -41,10 +51,11 @@ public class Message {
 	}
 
 	Message() {}
-	public Message(User sender, User recipient, String content) {
+	public Message(User sender, User recipient, String content, HouseBooking booking) {
 		this.sender = sender;
 		this.recipient = recipient;
 		this.content = content;
+		this.booking = booking;
 		date = new Date(System.currentTimeMillis());
 	}
 }
