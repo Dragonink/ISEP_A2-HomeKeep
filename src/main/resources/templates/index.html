@@ -16,7 +16,7 @@
     <h1>Welcome to HomeKeep!</h1>
     <form id="search-houses" th:action="@{/api/houses/search}" th:object="${search}">
         <div>
-            <input name="title" type="text" placeholder="Where would you like to go ?" autofocus />
+            <input name="title" th:value="${param.title}" type="text" placeholder="Where would you like to go ?" autofocus />
             <button type="submit">
                 <span class="fa fa-search"></span>
                 Search
@@ -26,22 +26,22 @@
             <legend>Travel dates</legend>
             <label>
                 From
-                <input name="startDate" type="date" />
+                <input name="startDate" th:value="${param.startDate}" type="date" />
             </label>
             <label>
                 To
-                <input name="endDate" type="date" />
+                <input name="endDate" th:value="${param.endDate}" type="date" />
             </label>
         </fieldset>
         <fieldset>
             <legend>Travelers</legend>
             <label>
                 Number of persons
-                <input name="persons" type="number" min="1" value="1" />
+                <input name="persons" th:value="${param.persons}" type="number" min="1" value="1" />
             </label>
             <label>
                 Number of babies
-                <input name="babies" type="number" value="0" />
+                <input name="babies" th:value="${param.babies}" type="number" value="0" />
             </label>
         </fieldset>
     </form>
