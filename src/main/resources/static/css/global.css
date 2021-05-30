@@ -1,0 +1,31 @@
+/*global styling*/
+
+:root {
+    --main-bg-color: #70c3ce;
+    --main-fg-color: white;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.md-space {
+    height: 2rem;
+}
+
+.img-responsive {
+    max-height: 100%;
+    width: auto;
+}
+
+/*header styling*/
+
+.navbar-brand {
+    height: 4rem; /* mandatory for homekeep_logo sizing */
+}
+
+.navbar-nav > li > .nav-link {
+    background-color: var(--main-bg-color);
+    color: var(--main-fg-color) !important;
+    margin: 0 1rem;
+}
