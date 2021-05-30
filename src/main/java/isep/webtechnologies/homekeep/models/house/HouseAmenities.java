@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class HouseAmenities {
-	private Integer beds;
+	private Integer beds = 0;
 	public Integer getBeds() {
 		return beds;
 	}
@@ -12,7 +12,7 @@ public class HouseAmenities {
 		this.beds = beds;
 	}
 
-	private Integer doubleBeds;
+	private Integer doubleBeds = 0;
 	public Integer getDoubleBeds() {
 		return doubleBeds;
 	}
@@ -20,7 +20,7 @@ public class HouseAmenities {
 		this.doubleBeds = doubleBeds;
 	}
 
-	private Integer babyBeds;
+	private Integer babyBeds = 0;
 	public Integer getBabyBeds() {
 		return babyBeds;
 	}
@@ -28,7 +28,7 @@ public class HouseAmenities {
 		this.babyBeds = babyBeds;
 	}
 
-	private Boolean parking;
+	private Boolean parking = false;
 	public Boolean getParking() {
 		return parking;
 	}
@@ -36,7 +36,7 @@ public class HouseAmenities {
 		this.parking = parking;
 	}
 
-	private Boolean heatingSystem;
+	private Boolean heatingSystem = false;
 	public Boolean getHeatingSystem() {
 		return heatingSystem;
 	}
@@ -44,7 +44,7 @@ public class HouseAmenities {
 		this.heatingSystem = heatingSystem;
 	}
 
-	private Boolean coolingSystem;
+	private Boolean coolingSystem = false;
 	public Boolean getCoolingSystem() {
 		return coolingSystem;
 	}
@@ -52,7 +52,7 @@ public class HouseAmenities {
 		this.coolingSystem = coolingSystem;
 	}
 
-	private Boolean shower;
+	private Boolean shower = false;
 	public Boolean getShower() {
 		return shower;
 	}
@@ -60,7 +60,7 @@ public class HouseAmenities {
 		this.shower = shower;
 	}
 
-	private Boolean freezer;
+	private Boolean freezer = false;
 	public Boolean getFreezer() {
 		return freezer;
 	}
@@ -68,7 +68,7 @@ public class HouseAmenities {
 		this.freezer = freezer;
 	}
 
-	private Boolean microwave;
+	private Boolean microwave = false;
 	public Boolean getMicrowave() {
 		return microwave;
 	}
@@ -76,7 +76,7 @@ public class HouseAmenities {
 		this.microwave = microwave;
 	}
 
-	private Boolean oven;
+	private Boolean oven = false;
 	public Boolean getOven() {
 		return oven;
 	}
@@ -84,7 +84,7 @@ public class HouseAmenities {
 		this.oven = oven;
 	}
 
-	private Boolean barbecue;
+	private Boolean barbecue = false;
 	public Boolean getBarbecue() {
 		return barbecue;
 	}
@@ -92,7 +92,7 @@ public class HouseAmenities {
 		this.barbecue = barbecue;
 	}
 
-	private Boolean dishwasher;
+	private Boolean dishwasher = false;
 	public Boolean getDishwasher() {
 		return dishwasher;
 	}
@@ -100,7 +100,7 @@ public class HouseAmenities {
 		this.dishwasher = dishwasher;
 	}
 
-	private Boolean washingMachine;
+	private Boolean washingMachine = false;
 	public Boolean getWashingMachine() {
 		return washingMachine;
 	}
@@ -108,7 +108,7 @@ public class HouseAmenities {
 		this.washingMachine = washingMachine;
 	}
 
-	private Boolean swimmingPool;
+	private Boolean swimmingPool = false;
 	public Boolean getSwimmingPool() {
 		return swimmingPool;
 	}
@@ -116,7 +116,7 @@ public class HouseAmenities {
 		this.swimmingPool = swimmingPool;
 	}
 
-	private Boolean disabledAccessible;
+	private Boolean disabledAccessible = false;
 	public Boolean getDisabledAccessible() {
 		return disabledAccessible;
 	}

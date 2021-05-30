@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class HouseRules {
-	private Boolean smokersWelcome;
+	private Boolean smokersWelcome = false;
 	public Boolean getSmokersWelcome() {
 		return smokersWelcome;
 	}
@@ -12,7 +12,7 @@ public class HouseRules {
 		this.smokersWelcome = smokersWelcome;
 	}
 
-	private Boolean childrenWelcome;
+	private Boolean childrenWelcome = false;
 	public Boolean getChildrenWelcome() {
 		return childrenWelcome;
 	}
@@ -20,7 +20,7 @@ public class HouseRules {
 		this.childrenWelcome = childrenWelcome;
 	}
 
-	private Boolean petsWelcome;
+	private Boolean petsWelcome = false;
 	public Boolean getPetsWelcome() {
 		return petsWelcome;
 	}
@@ -28,7 +28,7 @@ public class HouseRules {
 		this.petsWelcome = petsWelcome;
 	}
 
-	private Boolean petsToFeed;
+	private Boolean petsToFeed = false;
 	public Boolean getPetsToFeed() {
 		return petsToFeed;
 	}
@@ -36,7 +36,7 @@ public class HouseRules {
 		this.petsToFeed = petsToFeed;
 	}
 
-	private Boolean plantsToWater;
+	private Boolean plantsToWater = false;
 	public Boolean getPlantsToWater() {
 		return plantsToWater;
 	}
