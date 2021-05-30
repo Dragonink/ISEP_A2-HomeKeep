@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div th:fragment="housesList(houses, houseRedirectionBaseUrl, houseRedirectionText)"
+     th:unless="${#lists.isEmpty(houses)}" class="houses-list">
+    <!--/*@thymesVar id="houses" type="java.util.Iterator"*/-->
+    <!--/*@thymesVar id="houseRedirectionBaseUrl" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="houseRedirectionText" type="java.lang.String"*/-->
+    <div th:each="house : ${houses}" class="house card">
+        <!--/*@thymesVar id="house" type="isep.webtechnologies.homekeep.models.house.House"*/-->
+
+        <div class="card-body col-4 carousel slide" data-ride="carousel">
+            <div th:if="${house.getImages.isEmpty}">No images provided</div>
+            <!--/*@thymesVar id="image" type="isep.webtechnologies.homekeep.models.house.HouseImage"*/-->
+
+            <div th:unless="${house.getImages.isEmpty}" class="carousel-inner">
+                <div th:each="image, iterStat: ${house.getImages}"
+                     class="carousel-item"
+                     th:classappend="${iterStat.index}== 0  ? '':'active'">
+                    <img th:src="@{'/api/houseimages/image/'+${image.getId}}" class="d-block img-responsive">
+                </div>
+            </div>
+        </div>
+        <div class="card-body col-4">
+            <h3 th:text="${house.getTitle}" class="card-title"></h3>
+            <p th:text="${house.getDescription.orElse('No description provided')}" class="card-text"></p>
+            <a th:href="${houseRedirectionBaseUrl+house.getId}"
+               th:text="${houseRedirectionText}" class="card-link"></a>
+        </div>
+        <div class="card-body col-4">
+            <p th:if="${house.getAverageRating.isPresent}" th:inline="text">
+                <i class="far fa-star" style="color:gold"></i>
+                [[${#numbers.formatDecimal(house.getAverageRating.get, 0, 'NONE', 2, 'COMMA')}]]
+            </p>
+            <p th:unless="${house.getAverageRating.isPresent}">No ratings available</p>
+            <p th:text="${house.getLocation==null} ? 'Location: not provided' :
+            'Location: '+${house.getLocation.getRegion+', '+house.getLocation.getCountry}"></p>
+            <p th:text="'Owner: '+${house.getOwner.getFirstname}"></p>
+        </div>
+        <style>
+            .house.card {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .carousel-item {
+                height: 10rem;
+                width: 20rem;
+            }
+        </style>
+    </div>
+</div>
+</body>
+</html>
