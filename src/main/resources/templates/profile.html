@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>Profile</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/js/profile.js}"></script>
 </head>
 <body>
+<header th:replace="global :: header"></header>
 <div class="container">
     <!--/*@thymesVar id="user" type="isep.webtechnologies.homekeep.models.user.User"*/-->
     <form id="edit-form" th:action="${'/api/users/'+user.id}" th:object="${user}">

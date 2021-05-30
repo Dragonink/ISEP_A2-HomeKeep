@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>Registration</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/js/registration.js}"></script>
 </head>
 <body>
+<header th:replace="global :: header"></header>
 <div class="container">
     <form id="registration-form" th:action="@{/api/users}" method="post">
         <h1>Registration Page</h1>

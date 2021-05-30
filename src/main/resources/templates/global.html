@@ -1,0 +1,38 @@
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{images/favicon.ico}"/>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
+</head>
+
+<body>
+<header id="header" th:fragment="header">
+    <nav class="navbar navbar-expand navbar-light bg-light px-5">
+        <a th:href="@{/}" class="navbar-brand">
+            <img class="img-responsive" th:src="@{/images/homekeep_logo.png}" alt="homekeep_logo">
+        </a>
+        <ul class="navbar-nav ml-auto" sec:authorize="!isAuthenticated()">
+            <li><a th:href="@{/login}" class="nav-link">Login</a></li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto" sec:authorize="isAuthenticated()">
+            <li><a th:href="@{/bookings}" class="nav-link">My bookings</a></li>
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle font-weight-bold" href="#" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/profile}" class="nav-link">Edit my profile</a></li>
+                    <li><a th:href="@{/messages}" class="nav-link">My messages</a></li>
+                    <li><a th:href="@{/houses}" class="nav-link">My houses</a></li>
+                    <li><a th:href="@{/logout}" class="nav-link">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="md-space"></div>
+</header>
+</body>
