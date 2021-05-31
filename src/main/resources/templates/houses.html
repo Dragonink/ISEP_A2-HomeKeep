@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>Your Houses</title>
+</head>
+
+<body>
+<header th:replace="global :: header"></header>
+<div class="container">
+    <h1 class="text-center">Your Houses</h1>
+    <div th:if="${#lists.isEmpty(userHouses)}">
+        <p>You have no houses</p>
+    </div>
+    <div class="md-space"></div>
+    <div class="text-center">
+        <a th:href="@{/houses/new}" class="btn btn-outline-primary">Add a House</a>
+    </div>
+    <div class="md-space"></div>
+    <div th:replace="housefragments :: housesList(houses=${userHouses})"></div>
+</div>
+</body>
+</html>

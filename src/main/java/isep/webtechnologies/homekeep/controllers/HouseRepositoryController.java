@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,6 +65,14 @@ public class HouseRepositoryController {
 		@PathVariable Integer id
 	) {
 		return repository.findById(id);
+	}
+
+	@GetMapping(path = "/user")
+	public String userHouses(Model model) {
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Iterable<House> userHouses = repository.searchByOwner(Optional.of(currentUser.getId()));
+		model.addAttribute("userHouses", userHouses);
+		return "/houses";
 	}
 
 	@PostMapping
