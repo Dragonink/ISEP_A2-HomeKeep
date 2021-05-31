@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	</head>
+	<body>
+		<h1> Inbox </h1>
+		<table>
+			<tr th:each="message : ${msgs}">
+				<div>
+					<th>
+						From: <td th:text = "${message.getOwner().getFirstname()}"></td> <td th:text = "${message.getOwner().getLastname()}"></td>
+					</th>
+					<th>
+						To: <td th:text = "${message.getRecipient().getFirstname()}"></td> <td th:text = "${message.getRecipient().getLastname()}"></td>
+		            </th>
+		            <th>
+		                Content: <td th:text="${message.content.get()}"></td>
+		            </th>
+		            <th>
+		            	Date: <td th:text="${message.getDate()}"></td>
+		            </th>
+	            </div>
+            </tr>
+		</table>
+	</body>
+</html>

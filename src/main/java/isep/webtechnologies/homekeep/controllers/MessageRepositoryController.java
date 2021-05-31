@@ -1,9 +1,14 @@
 package isep.webtechnologies.homekeep.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,21 +20,40 @@ import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.user.Message;
 import isep.webtechnologies.homekeep.models.user.MessageRepository;
 import isep.webtechnologies.homekeep.models.user.User;
+import isep.webtechnologies.homekeep.models.user.UserRepository;
 
 @Controller
 @RequestMapping(path = "/api/messages")
 public class MessageRepositoryController {
 	@Autowired
 	private MessageRepository repository;
+	@Autowired
+	private UserRepository repo;
 
-	@PostMapping(path = "/conversation")
+	@RequestMapping(path = "/conversation/{id1}/{id2}")
 	public @ResponseBody Iterable<Message> getConversation(
-		@RequestParam("user1") User user1,
-		@RequestParam("user2") User user2
+		@PathVariable Integer id1,
+		@PathVariable Integer id2
 	) {
-		return repository.findConversation(user1, user2);
+		Optional<User> user1 = repo.findById(id1);
+		Optional<User> user2 = repo.findById(id2);
+		if (user1.isPresent() && user2.isPresent()) {
+		return repository.findConversation(user1.get(), user2.get());
+		}
+		else return null;
 	}
 
+	@RequestMapping(path = "/inbox")
+	public String getMessages(
+			Model model
+		) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Iterable<Message> msgs = repository.findMessages(user);
+			model.addAttribute("msgs",msgs);
+			return "/inbox";
+	}
+	
+	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody Message addMessage(
