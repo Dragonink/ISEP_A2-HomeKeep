@@ -11,6 +11,7 @@
 
 <body onload="initForm();">
 <header th:replace="global :: header"></header>
+<div class="container">
     <h1>Welcome to HomeKeep!</h1>
     <form id="search-houses" th:action="@{/api/houses/search}" th:object="${search}">
         <div>
@@ -44,12 +45,10 @@
         </fieldset>
     </form>
     <output form="search-houses" th:if="${not #lists.isEmpty(search)}">
-        <table>
-            <tr th:each="house : ${search}">
-                <th th:text="${house.title}"></th>
-            </tr>
-        </table>
+        <div th:replace="housefragments :: housesList(houses=${search},
+         houseRedirectionBaseUrl='/house/', houseRedirectionText='Book this house')"></div>
     </output>
+</div>
     <!-- <form name="searchForm">
 
         <div class="selection">

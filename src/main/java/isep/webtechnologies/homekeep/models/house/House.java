@@ -86,6 +86,12 @@ public class House {
 	public Map<User, HouseRating> getRatings() {
 		return ratings;
 	}
+	public Optional<Double> getAverageRating() {
+		double averageRating = 0;
+		for (HouseRating houseRating : ratings.values()) averageRating += houseRating.getValue();
+		averageRating /= ratings.size();
+		return Optional.ofNullable((ratings.size() == 0) ? null : averageRating);
+	}
 
 	@OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<HouseBooking> bookings;
