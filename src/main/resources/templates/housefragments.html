@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-<div th:fragment="housesList(houses, houseRedirectionBaseUrl)"
+<div th:fragment="housesList(houses)"
      th:unless="${#lists.isEmpty(houses)}" class="houses-list">
     <!--/*@thymesVar id="houses" type="java.util.Iterator"*/-->
-    <!--/*@thymesVar id="houseRedirectionBaseUrl" type="java.lang.String"*/-->
     <!--/*@thymesVar id="house" type="isep.webtechnologies.homekeep.models.house.House"*/-->
-    <a th:each="house : ${houses}" th:href="${houseRedirectionBaseUrl+house.getId}" class="house link-unstyled">
+    <a th:each="house : ${houses}" th:href="${'/api/houses/'+house.getId}" class="house link-unstyled">
         <div class="card">
             <div class="card-body col-4 carousel slide" data-ride="carousel">
                 <div th:if="${house.getImages.isEmpty}">No images provided</div>
