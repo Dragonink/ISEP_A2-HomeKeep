@@ -27,21 +27,10 @@ import isep.webtechnologies.homekeep.models.user.UserRepository;
 public class MessageRepositoryController {
 	@Autowired
 	private MessageRepository repository;
-	@Autowired
-	private UserRepository repo;
+	private UserRepository UserRepo;
+	
 
-	@RequestMapping(path = "/conversation/{id1}/{id2}")
-	public @ResponseBody Iterable<Message> getConversation(
-		@PathVariable Integer id1,
-		@PathVariable Integer id2
-	) {
-		Optional<User> user1 = repo.findById(id1);
-		Optional<User> user2 = repo.findById(id2);
-		if (user1.isPresent() && user2.isPresent()) {
-		return repository.findConversation(user1.get(), user2.get());
-		}
-		else return null;
-	}
+	
 
 	@RequestMapping(path = "/inbox")
 	public String getMessages(
@@ -53,19 +42,37 @@ public class MessageRepositoryController {
 			return "/inbox";
 	}
 	
+	@RequestMapping(path = "/inbox/{id}")
+	public String getConversation(
+		@PathVariable Integer id,
+		Model model
+	) {
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Integer currentId = user.getId();
+		Iterable<Message> msgs = repository.findConversation(currentId, id);
+		model.addAttribute("msgs",msgs);
+		model.addAttribute("secondId",id);
+		model.addAttribute("currentId",currentId);
+		return "/inbox";
+		
+	}
 	
-	@PostMapping
+	
+	@PostMapping(path = "/api/messages/inbox/{id}",consumes = {"multipart/form-data"}	)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody Message addMessage(
-		@RequestParam("sender") User sender,
-		@RequestParam("recipient") User recipient,
-		@RequestParam("content") String content,
-		@RequestParam("booking") HouseBooking booking
+		@PathVariable Integer id,
+		@RequestParam("content") String content
 	) {
-		Message message = new Message(sender, recipient, content, booking);
+		User sender = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User recipient = UserRepo.findById(id).get();
+		Message message = new Message(sender, recipient, content,null);
 		return repository.save(message);
 	}
 
+	
+	
 	@DeleteMapping(path = "/{id}")
 	public void deleteMessage(
 		@PathVariable Integer id

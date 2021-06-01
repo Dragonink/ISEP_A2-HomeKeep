@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+	 <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>HomeKeep</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}">
 	</head>
 	<body>
+		<header th:replace="global :: header"></header>
 		<h1> Inbox </h1>
 		<table>
 			<tr th:each="message : ${msgs}">
-				<div>
+				<div class = "container">
+					
 					<th>
 						From: <td th:text = "${message.getOwner().getFirstname()}"></td> <td th:text = "${message.getOwner().getLastname()}"></td>
 					</th>
 					<th>
+						<td><a th:href="@{/api/messages/inbox/{id}(id = ${message.getOwner().getId()})}">See conversation</a></td>
+					</th>
+					<th>
 						To: <td th:text = "${message.getRecipient().getFirstname()}"></td> <td th:text = "${message.getRecipient().getLastname()}"></td>
 		            </th>
+		            <th>
+						<td><a th:href="@{/api/messages/inbox/{id}(id = ${message.getRecipient().getId()})}">See conversation</a></td>
+					</th>
 		            <th>
 		                Content: <td th:text="${message.content.get()}"></td>
 		            </th>
@@ -22,5 +33,13 @@
 	            </div>
             </tr>
 		</table>
+		<div th:if="${secondId != null and secondId != currentId}">
+			<form id="new-message" th:action="@{/api/messages/inbox}" th:object = "${message}" method = "post">
+		        <div>
+		        	<input type = "text" id = "content" name = "content" >
+		            <button type="submit">Send</button>
+		        </div>
+	        </form>
+	    </div>
 	</body>
 </html>
