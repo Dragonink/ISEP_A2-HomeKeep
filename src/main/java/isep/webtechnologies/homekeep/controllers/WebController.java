@@ -20,4 +20,11 @@ public class WebController {
     public String registration() {
         return "/registration";
     }
+
+    @RequestMapping("/house/new")
+    public String newHouse(Model model) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("user",currentUser);
+        return "/house/new";
+    }
 }
