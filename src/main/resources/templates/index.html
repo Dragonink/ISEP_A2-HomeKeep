@@ -44,9 +44,9 @@
             </label>
         </fieldset>
     </form>
-    <output form="search-houses" th:if="${not #lists.isEmpty(search)}">
+    <output form="search-houses" th:if="${not #lists.isEmpty(search)}" style="width: 100%">
         <div th:replace="housefragments :: housesList(houses=${search},
-         houseRedirectionBaseUrl='/house/', houseRedirectionText='Book this house')"></div>
+         houseRedirectionBaseUrl='/house/')"></div>
     </output>
 </div>
     <!-- <form name="searchForm">

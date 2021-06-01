@@ -1,9 +1,12 @@
 package isep.webtechnologies.homekeep.models.house;
 
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Spliterator;
 import java.util.stream.StreamSupport;
 
+import isep.webtechnologies.homekeep.models.user.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface HouseRepository extends CrudRepository<House, Integer> {
@@ -41,5 +44,15 @@ public interface HouseRepository extends CrudRepository<House, Integer> {
 					.orElse(true)
 			).orElse(true))
 			.iterator();
+	}
+
+	default Iterable<House> searchByOwner(Optional<Integer> ownerId) {
+		Spliterator<House> houses = this.findAll().spliterator();
+		return () -> StreamSupport.stream(houses, false)
+				.filter(house -> ownerId
+						.map(id -> house.getOwner().getId().equals(id))
+						.orElse(true)
+				)
+				.iterator();
 	}
 }
