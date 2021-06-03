@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>House Details</title>
+</head>
+<body>
+<header th:replace="global :: header"></header>
+<!--/*@thymesVar id="house" type="isep.webtechnologies.homekeep.models.house.House"*/-->
+<h1>House Page</h1><br><br><br><br><br>
+
+<div th:if="${house.getImages.isEmpty}">No images provided</div>
+<!--/*@thymesVar id="image" type="isep.webtechnologies.homekeep.models.house.HouseImage"*/-->
+<div th:unless="${house.getImages.isEmpty}" class="carousel-inner">
+    <div th:each="image, iterStat: ${house.getImages}"
+         class="carousel-item"
+         th:classappend="${iterStat.index}== 0  ? '':'active'">
+        <img th:src="@{'/api/houseimages/image/'+${image.getId}}" class="d-block img-responsive">
+    </div>
+</div><br><br>
+
+
+
+<table>
+    <thead>
+    <tr>
+        <th th:text="${house.getTitle}+', '+${house.getLocation.getRegion+', '+house.getLocation.getCountry}
++' - owned by '+${house.getOwner.getFirstname}"></th>
+        <th>
+            <a th:href="@{'/api/messages/inbox/'+${house.getOwner.getId}}">
+                Contact
+            </a>
+
+        </th>
+
+        <br><br>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <h2>Dispositions</h2>
+
+            <div th:if="${house.getAmenities.getBeds}">
+                <p th:text="'Number of beds : '+${house.getAmenities.getBeds}"></p>
+            </div>
+
+            <div th:if="${house.getAmenities.getDoubleBeds}">
+                <p th:text="'Number of double-beds : '+${house.getAmenities.getDoubleBeds}"></p>
+            </div>
+
+            <div th:if="${house.getAmenities.getBabyBeds}">
+                <p th:text="'Number of baby-beds : '+${house.getAmenities.getBabyBeds}"></p>
+            </div>
+
+            <p th:if="${house.getAmenities.getParking}">There is a parking</p>
+            <p th:if="${house.getAmenities.getHeatingSystem}">There is a heating system</p>
+            <p th:if="${house.getAmenities.getCoolingSystem}">There is a cooling system</p>
+            <p th:if="${house.getAmenities.getShower}">There is a shower</p>
+            <p th:if="${house.getAmenities.getFreezer}">There is a freezer</p>
+            <p th:if="${house.getAmenities.getMicrowave}">There is a microwave</p>
+            <p th:if="${house.getAmenities.getOven}">There is a oven</p>
+            <p th:if="${house.getAmenities.getBarbecue}">There is a barbecue</p>
+            <p th:if="${house.getAmenities.getDishwasher}">There is a dishwasher</p>
+            <p th:if="${house.getAmenities.getWashingMachine}">There is a washingMachine</p>
+            <p th:if="${house.getAmenities.getSwimmingPool}">There is a swimmingPool</p>
+        </td>
+        <td>
+            <h2>Description</h2>
+            <p th:text="${house.getDescription.orElse('No description provided')}" class="card-text"></p>
+        </td>
+        <td>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2>Disponibility</h2>
+            <table>
+                <thead>
+                <p>The house is available as of today,
+                    except for the following periods of unavailability:</p>
+                </thead>
+                <tbody>
+                <tr th:each="houseBooking : ${house.getBookings}">
+                    <div th:if="${house.getAmenities.getBabyBeds}">
+                        <td th:utext="'From '+${houseBooking.getStartDate}+' to '+${houseBooking.getEndDate}"></td>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <h2>Services</h2>
+            <p th:if="${house.getRules.getPetsToFeed}">Take care of pets</p>
+            <p th:if="${house.getRules.getPlantsToWater}">Water flowers and plants</p>
+        </td>
+        <td>
+            <h2>House rules</h2>
+            <p th:text="${house.getRules.getSmokersWelcome} ? 'Smokers are welcome !' :
+                'Smoking is not allowed in the house'"></p>
+            <p th:if="${house.getRules.getChildrenWelcome} ? 'Children are welcome !' :
+                'Unfortunately, the house is not equipped to receive children'"></p>
+            <p th:if="${house.getRules.getPetsWelcome} ? 'Pets are welcome !' :
+                'Unfortunately, the house is not equipped to receive pets'"></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+

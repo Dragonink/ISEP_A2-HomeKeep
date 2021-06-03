@@ -63,11 +63,11 @@ public class HouseRepositoryController {
 		return "index";
 	}
 
-	@GetMapping(path = "/{id}")
-	public @ResponseBody Optional<House> getHouseById(
-		@PathVariable Integer id
-	) {
-		return repository.findById(id);
+	@RequestMapping (path = "/{id}")
+	public String getHouseById(@PathVariable Integer id, Model model){
+		Optional<House> house = repository.findById(id);
+		house.ifPresent(value -> model.addAttribute("house", value));
+		return "/housedetails";
 	}
 
 	@GetMapping(path = "/user")
