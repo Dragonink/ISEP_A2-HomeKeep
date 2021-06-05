@@ -10,41 +10,33 @@
 		<div class = "container">
 			<div class = "row">
 				<div class = "col-sm">
-					<h1> Inbox </h1>
+					<h2 class = "text-center"> Inbox </h2>
 
-					<table>
+					<tablem class = "table-striped">
 						<tr th:each = "u :${usrs}">
-			            		<td th:text = "${u.getFirstname()}"></td>
-			            		<td th:text = "${u.getLastname()}"></td>
-			            		<td><a th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}">See Conversation</a></td>
+							<div>
+			            		<td><a class = "h5" 	th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}"><p th:text = "${u.getFirstname() + ' ' + u.getLastname()}"></p></a></td>
+			            	</div>
 			            </tr>
 					</table>
 				
 				</div>
 				<div class = "col-sm">
-					<div  th:if="${secondId != null and secondId != currentId}">
-						<form id="new-message" th:action="@{/api/messages/inbox/{id}(id = ${secondId})}" method = "post">
-					        <div>
-					        	<h2>Send a message</h2>
-					      		<input type = "text" id = "recipient" name = "recipient" th:value = ${secondId}>
-					        	<input type = "text" id = "content" name = "content">
-					            <button type="submit">Send</button>
-					        </div>
-				        </form>
-				    </div>
+					
 				    <div>
 				    	<table>
+				    		<h2 th:if= "${secondId != null and secondId != currentId}"  class = "text-center" th:text = "'Conversation with '+${recipient.getFirstname()}"></h2>	
 							<tr th:each="message : ${msgs}">
 								<div class = "container">
 									
 									<th>
-										<td th:text = "${message.getOwner().getFirstname()}"></td> <td th:text = "${message.getOwner().getLastname()}"></td>
+										<td> <p class  ="h6" th:text = "${message.getOwner().getFirstname() + ' ' + message.getOwner().getLastname() + ': '}"></p></td>
 									</th>
 						            <th>
-						                <td th:text="${message.content.get()}"></td>
+						                <td> <p class = "h6" th:text="${message.content.get()}"></p></td>
 						            </th>
 						            <th>
-						            	Date: <td th:text="${message.getDate()}"></td>
+						            	<td> <p class = "h6" th:text="'Date: ' + ${message.getDate()}"></p></td>
 						            </th>
 					            </div>
 				            </tr>
@@ -52,7 +44,17 @@
 						</table>
 				    </div>
 				    <div th:unless="${secondId != null and secondId != currentId}">
-				    	Empty
+				    	<h2 class = "text.center">Start a Conversation</h2>
+				    </div>
+				    <div  th:if="${secondId != null and secondId != currentId}">
+						<form id="new-message" th:action="@{/api/messages/inbox/{id}(id = ${secondId})}" method = "post">
+					        <div>
+					        	<h2 class = "text-center" th:text = "'Send a message to '+${recipient.getFirstname()}"></h2>
+					      		<input type = "hidden" id = "recipient" name = "recipient" th:value = ${secondId} >
+					        	<input type = "text" id = "content" name = "content" required>
+					            <button type="submit">Send</button>
+					        </div>
+				        </form>
 				    </div>
 				</div>
 			</div>

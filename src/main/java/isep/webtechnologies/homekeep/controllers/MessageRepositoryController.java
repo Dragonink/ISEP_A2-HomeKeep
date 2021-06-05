@@ -55,7 +55,7 @@ public class MessageRepositoryController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Integer currentId = user.getId();
 		User recipient = UserRepo.findById(id).get();
-		Iterable<Message> msgs = repository.findMessages(user);
+		Iterable<Message> msgs = repository.findConversation(user, recipient);
 		Iterable<User> usrs = repository.findUsers(user);
 		model.addAttribute("usrs",usrs);
 		model.addAttribute("msgs",msgs);
@@ -79,7 +79,7 @@ public class MessageRepositoryController {
 		User senderUser = UserRepo.findById(senderId).get();
 		Message message = new Message(senderUser, recipientUser, content,null);
 		repository.save(message);
-		return new RedirectView("/api/messages/inbox");
+		return new RedirectView(id.toString());
 	
 	}
 
