@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.view.RedirectView;
 
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.user.Message;
@@ -27,6 +28,7 @@ import isep.webtechnologies.homekeep.models.user.UserRepository;
 public class MessageRepositoryController {
 	@Autowired
 	private MessageRepository repository;
+	@Autowired
 	private UserRepository UserRepo;
 	
 
@@ -37,8 +39,10 @@ public class MessageRepositoryController {
 			Model model
 		) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Iterable<Message> msgs = repository.findMessages(user);
-			model.addAttribute("msgs",msgs);
+			Integer currId = user.getId();
+			Iterable<User> usrs = repository.findUsers(user);
+			model.addAttribute("usrs",usrs);
+			model.addAttribute("currentId",currId);
 			return "/inbox";
 	}
 	
@@ -50,25 +54,33 @@ public class MessageRepositoryController {
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Integer currentId = user.getId();
-		Iterable<Message> msgs = repository.findConversation(currentId, id);
+		User recipient = UserRepo.findById(id).get();
+		Iterable<Message> msgs = repository.findMessages(user);
+		Iterable<User> usrs = repository.findUsers(user);
+		model.addAttribute("usrs",usrs);
 		model.addAttribute("msgs",msgs);
 		model.addAttribute("secondId",id);
 		model.addAttribute("currentId",currentId);
+		model.addAttribute("recipient",recipient);
 		return "/inbox";
 		
 	}
 	
 	
-	@PostMapping(path = "/api/messages/inbox/{id}",consumes = {"multipart/form-data"}	)
-	@ResponseStatus(code = HttpStatus.CREATED)
-	public @ResponseBody Message addMessage(
-		@PathVariable Integer id,
-		@RequestParam("content") String content
-	) {
+	@PostMapping(value = "inbox/{id}")
+	public RedirectView addMessage(
+			@PathVariable Integer id,
+			@RequestParam ("content") String content,
+			@RequestParam ("recipient") Integer recipient
+			) {
 		User sender = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User recipient = UserRepo.findById(id).get();
-		Message message = new Message(sender, recipient, content,null);
-		return repository.save(message);
+		Integer senderId = sender.getId();
+		User recipientUser = UserRepo.findById(recipient).get();
+		User senderUser = UserRepo.findById(senderId).get();
+		Message message = new Message(senderUser, recipientUser, content,null);
+		repository.save(message);
+		return new RedirectView("/api/messages/inbox");
+	
 	}
 
 	
