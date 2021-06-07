@@ -6,13 +6,17 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import isep.webtechnologies.homekeep.models.user.User;
 
@@ -25,7 +29,10 @@ public class House {
 		return id;
 	}
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@Column(name = "owner_id")
+	private Integer ownerId;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "owner_id", insertable = false, updatable = false)
 	private User owner;
 	public User getOwner() {
 		return owner;
@@ -86,6 +93,7 @@ public class House {
 	public Map<User, HouseRating> getRatings() {
 		return ratings;
 	}
+	@JsonIgnore
 	public Optional<Double> getAverageRating() {
 		double averageRating = 0;
 		for (HouseRating houseRating : ratings.values()) averageRating += houseRating.getValue();
@@ -102,6 +110,7 @@ public class House {
 	House() {}
 	public House(User owner, String title) {
 		this.owner = owner;
+		this.ownerId = owner.getId();
 		this.title = title;
 	}
 }

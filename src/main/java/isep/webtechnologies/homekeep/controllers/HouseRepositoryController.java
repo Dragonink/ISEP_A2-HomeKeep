@@ -28,12 +28,15 @@ import isep.webtechnologies.homekeep.models.house.HouseAmenities;
 import isep.webtechnologies.homekeep.models.house.HouseRepository;
 import isep.webtechnologies.homekeep.models.house.HouseRules;
 import isep.webtechnologies.homekeep.models.user.User;
+import isep.webtechnologies.homekeep.models.user.UserRepository;
 
 @Controller
 @RequestMapping(path = "/api/houses")
 public class HouseRepositoryController {
 	@Autowired
 	private HouseRepository repository;
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping
 	public @ResponseBody Iterable<House> getAllHouses() {
@@ -75,12 +78,13 @@ public class HouseRepositoryController {
 		return "/houses";
 	}
 
-	@PostMapping
+	@PostMapping(consumes = {"multipart/form-data"})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody House addHouse(
-		@RequestParam("owner") User owner,
 		@RequestParam("title") String title
 	) {
+		User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		owner = userRepository.findById(owner.getId()).orElseThrow();
 		House house = new House(owner, title);
 		return repository.save(house);
 	}

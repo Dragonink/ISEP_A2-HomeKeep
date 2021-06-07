@@ -1,12 +1,10 @@
 package isep.webtechnologies.homekeep.models.house;
 
 import java.sql.Date;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.StreamSupport;
 
-import isep.webtechnologies.homekeep.models.user.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface HouseRepository extends CrudRepository<House, Integer> {

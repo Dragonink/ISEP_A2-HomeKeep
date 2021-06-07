@@ -1,10 +1,11 @@
 package isep.webtechnologies.homekeep.controllers;
 
-import isep.webtechnologies.homekeep.models.user.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import isep.webtechnologies.homekeep.models.user.User;
 
 @Controller
 public class WebController {
@@ -14,9 +15,16 @@ public class WebController {
         model.addAttribute("user",currentUser);
         return "/profile";
     }
-    
+
     @RequestMapping("/registration")
     public String registration() {
         return "/registration";
+    }
+
+    @RequestMapping("/houses/new")
+    public String newHouse(Model model) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("user",currentUser);
+        return "/houses/new";
     }
 }
