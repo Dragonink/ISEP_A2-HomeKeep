@@ -38,11 +38,11 @@ public class MessageRepositoryController {
 	public String getMessages(
 			Model model
 		) {
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Integer currId = user.getId();
-			Iterable<User> usrs = repository.findUsers(user);
-			model.addAttribute("usrs",usrs);
-			model.addAttribute("currentId",currId);
+			User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Integer currentId = currentUser.getId();
+			Iterable<User> interlocutors = repository.findUsers(currentUser);
+			model.addAttribute("interlocutors",interlocutors);
+			model.addAttribute("currentId",currentId);
 			return "/inbox";
 	}
 	
@@ -52,13 +52,13 @@ public class MessageRepositoryController {
 		Model model
 	) {
 		
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Integer currentId = user.getId();
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Integer currentId = currentUser.getId();
 		User recipient = UserRepo.findById(id).orElseThrow();
-		Iterable<Message> msgs = repository.findConversation(user, recipient);
-		Iterable<User> usrs = repository.findUsers(user);
-		model.addAttribute("usrs",usrs);
-		model.addAttribute("msgs",msgs);
+		Iterable<Message> conversation = repository.findConversation(currentUser, recipient);
+		Iterable<User> interlocutors = repository.findUsers(currentUser);
+		model.addAttribute("interlocutors", interlocutors);
+		model.addAttribute("conversation", conversation);
 		model.addAttribute("secondId",id);
 		model.addAttribute("currentId",currentId);
 		model.addAttribute("recipient",recipient);

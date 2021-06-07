@@ -13,7 +13,7 @@
 					<h2 class = "text-center"> Inbox </h2>
 
 					<tablem class = "table-striped">
-						<tr th:each = "u :${usrs}">
+						<tr th:each = "u :${interlocutors}">
 							<div>
 			            		<td><a class = "h5" 	th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}"><p th:text = "${u.getFirstname() + ' ' + u.getLastname()}"></p></a></td>
 			            	</div>
@@ -26,7 +26,7 @@
 				    <div>
 				    	<table>
 				    		<h2 th:if= "${secondId != null and secondId != currentId}"  class = "text-center" th:text = "'Conversation with '+${recipient.getFirstname()}"></h2>	
-							<tr th:each="message : ${msgs}">
+							<tr th:each="message : ${conversation}">
 								<div class = "container">
 									
 									<th>
