@@ -54,7 +54,7 @@ public class MessageRepositoryController {
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Integer currentId = user.getId();
-		User recipient = UserRepo.findById(id).get();
+		User recipient = UserRepo.findById(id).orElseThrow();
 		Iterable<Message> msgs = repository.findConversation(user, recipient);
 		Iterable<User> usrs = repository.findUsers(user);
 		model.addAttribute("usrs",usrs);
