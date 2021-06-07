@@ -76,7 +76,7 @@ public class MessageRepositoryController {
 		User sender = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Integer senderId = sender.getId();
 		User recipientUser = UserRepo.findById(recipient).orElseThrow();
-		User senderUser = UserRepo.findById(senderId).get();
+		User senderUser = UserRepo.findById(senderId).orElseThrow();
 		Message message = new Message(senderUser, recipientUser, content,null);
 		repository.save(message);
 		return new RedirectView(id.toString());
