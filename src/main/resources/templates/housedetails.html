@@ -3,110 +3,98 @@
 <head>
     <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>House Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/housedetails.css}">
 </head>
 <body>
 <header th:replace="global :: header"></header>
-<!--/*@thymesVar id="house" type="isep.webtechnologies.homekeep.models.house.House"*/-->
-<h1>House Page</h1><br><br><br><br><br>
-
-<div th:if="${house.getImages.isEmpty}">No images provided</div>
-<!--/*@thymesVar id="image" type="isep.webtechnologies.homekeep.models.house.HouseImage"*/-->
-<div th:unless="${house.getImages.isEmpty}" class="carousel-inner">
-    <div th:each="image, iterStat: ${house.getImages}"
-         class="carousel-item"
-         th:classappend="${iterStat.index}== 0  ? '':'active'">
-        <img th:src="@{'/api/houseimages/image/'+${image.getId}}" class="d-block img-responsive">
+<div class="container">
+    <!--/*@thymesVar id="house" type="isep.webtechnologies.homekeep.models.house.House"*/-->
+    <div class="row head">
+        <div class="col-8">
+            <h3 th:text="${house.title}"></h3>
+            <h5 th:if="${house.location}!=null" th:text="${house.location.region+', '+house.location.country}"></h5>
+        </div>
+        <div class="col-4">
+            <div th:text="'Owner: '+${house.owner.firstname}"></div>
+            <a th:href="@{'/api/messages/inbox/'+${house.owner.id}}">Contact owner</a>
+        </div>
     </div>
-</div><br><br>
-
-
-
-<table>
-    <thead>
-    <tr>
-        <th th:text="${house.getTitle}+', '+${house.getLocation.getRegion+', '+house.getLocation.getCountry}
-+' - owned by '+${house.getOwner.getFirstname}"></th>
-        <th>
-            <a th:href="@{'/api/messages/inbox/'+${house.getOwner.getId}}">
-                Contact
-            </a>
-
-        </th>
-
-        <br><br>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <h2>Dispositions</h2>
-
-            <div th:if="${house.getAmenities.getBeds}">
-                <p th:text="'Number of beds : '+${house.getAmenities.getBeds}"></p>
+    <div class="md-space"></div>
+    <div th:replace="housefragments::houseCarousel(house=${house})"></div>
+    <div class="md-space"></div>
+    <div class="card-deck main">
+        <div class="card border-info p-3 description">
+            <h3>Description</h3>
+            <p th:text="*{house.description.orElse('No description provided')}"></p>
+        </div>
+        <div class="card border-info p-3 availability" th:object="${house.bookings}">
+            <h3>Availability</h3>
+            <div th:unless="${house.bookings.isEmpty}">This house is available for the following periods:</div>
+            <div th:if="${house.bookings.isEmpty}">This house is not available at any time for now</div>
+            <!--/*@thymesVar id="booking" type="isep.webtechnologies.homekeep.models.house.HouseBooking"*/-->
+            <div th:each="booking : ${house.bookings}" th:if="${booking.isAvailable}" class="booking">
+                <span class="startDate" th:text="${booking.startDate}"></span>
+                <span> - </span>
+                <span class="endDate" th:text="${booking.endDate}"></span>
             </div>
-
-            <div th:if="${house.getAmenities.getDoubleBeds}">
-                <p th:text="'Number of double-beds : '+${house.getAmenities.getDoubleBeds}"></p>
+        </div>
+    </div>
+    <div class="md-space"></div>
+    <div class="card-deck details">
+        <div class="card border-info p-3 amenities" th:object="${house.amenities}" th:if="${house.amenities}!=null">
+            <h3>Amenities</h3>
+            <div class="beds">
+                <span th:text="*{beds+ ' bed(s)'}"></span>
+                <span aria-hidden="true"> · </span>
+                <span th:text="*{doubleBeds+ ' double bed(s)'}"></span>
+                <span aria-hidden="true"> · </span>
+                <span th:text="*{babyBeds+ ' baby bed(s)'}"></span>
             </div>
-
-            <div th:if="${house.getAmenities.getBabyBeds}">
-                <p th:text="'Number of baby-beds : '+${house.getAmenities.getBabyBeds}"></p>
+            <div class="hvac">
+                <span>Heating and cooling: </span>
+                <span th:classappend="${(heatingSystem)} ? '' : 'strike-through'">heating system</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(coolingSystem)} ? '' : 'strike-through'">cooling system</span>
             </div>
-
-            <p th:if="${house.getAmenities.getParking}">There is a parking</p>
-            <p th:if="${house.getAmenities.getHeatingSystem}">There is a heating system</p>
-            <p th:if="${house.getAmenities.getCoolingSystem}">There is a cooling system</p>
-            <p th:if="${house.getAmenities.getShower}">There is a shower</p>
-            <p th:if="${house.getAmenities.getFreezer}">There is a freezer</p>
-            <p th:if="${house.getAmenities.getMicrowave}">There is a microwave</p>
-            <p th:if="${house.getAmenities.getOven}">There is a oven</p>
-            <p th:if="${house.getAmenities.getBarbecue}">There is a barbecue</p>
-            <p th:if="${house.getAmenities.getDishwasher}">There is a dishwasher</p>
-            <p th:if="${house.getAmenities.getWashingMachine}">There is a washingMachine</p>
-            <p th:if="${house.getAmenities.getSwimmingPool}">There is a swimmingPool</p>
-        </td>
-        <td>
-            <h2>Description</h2>
-            <p th:text="${house.getDescription.orElse('No description provided')}" class="card-text"></p>
-        </td>
-        <td>
-
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <h2>Disponibility</h2>
-            <table>
-                <thead>
-                <p>The house is available as of today,
-                    except for the following periods of unavailability:</p>
-                </thead>
-                <tbody>
-                <tr th:each="houseBooking : ${house.getBookings}">
-                    <div th:if="${house.getAmenities.getBabyBeds}">
-                        <td th:utext="'From '+${houseBooking.getStartDate}+' to '+${houseBooking.getEndDate}"></td>
-                    </div>
-                </tr>
-                </tbody>
-            </table>
-        </td>
-        <td>
-            <h2>Services</h2>
-            <p th:if="${house.getRules.getPetsToFeed}">Take care of pets</p>
-            <p th:if="${house.getRules.getPlantsToWater}">Water flowers and plants</p>
-        </td>
-        <td>
-            <h2>House rules</h2>
-            <p th:text="${house.getRules.getSmokersWelcome} ? 'Smokers are welcome !' :
-                'Smoking is not allowed in the house'"></p>
-            <p th:if="${house.getRules.getChildrenWelcome} ? 'Children are welcome !' :
-                'Unfortunately, the house is not equipped to receive children'"></p>
-            <p th:if="${house.getRules.getPetsWelcome} ? 'Pets are welcome !' :
-                'Unfortunately, the house is not equipped to receive pets'"></p>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <div class="bathroom">
+                <span>Bathroom: </span>
+                <span th:classappend="${(shower)} ? '' : 'strike-through'">shower</span>
+            </div>
+            <div class="appliances">
+                <span>Appliances: </span>
+                <span th:classappend="${(freezer)} ? '' : 'strike-through'">freezer</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(microwave)} ? '' : 'strike-through'">microwave</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(oven)} ? '' : 'strike-through'">oven</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(dishwasher)} ? '' : 'strike-through'">dishwasher</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(washingMachine)} ? '' : 'strike-through'">washingMachine</span>
+            </div>
+            <div class="outdoor">
+                <span>Outdoor: </span>
+                <span th:classappend="${(swimmingPool)} ? '' : 'strike-through'">swimming pool</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(barbecue)} ? '' : 'strike-through'">barbecue</span>
+            </div>
+            <div class="accessibility">
+                <span>Accessibility: </span>
+                <span th:classappend="${(disabledAccessible)} ? '' : 'strike-through'">disabled accessible</span>
+                <span aria-hidden="true"> · </span>
+                <span th:classappend="${(parking)} ? '' : 'strike-through'">parking</span>
+            </div>
+        </div>
+        <div class="card border-info p-3 rules" th:object="${house.rules}" th:if="${house.rules}!=null">
+            <h3>Rules</h3>
+            <div th:text="'Smokers welcome: '+(${(smokersWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Childrens welcome: '+(${(childrenWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Pets welcome: '+(${(petsWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Pets to feed: '+(${(petsToFeed)} ? 'yes' : 'no')"></div>
+            <div th:text="'Plants to water: '+(${(plantsToWater)} ? 'yes' : 'no')"></div>
+        </div>
+    </div>
+    <div class="md-space"></div>
 </div>
 </body>
 
