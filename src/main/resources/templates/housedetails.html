@@ -4,6 +4,12 @@
     <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>House Details</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/housedetails.css}">
+    <script type="application/javascript" th:src="@{/js/housedetails.js}"></script>
+
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
 </head>
 <body>
 <header th:replace="global :: header"></header>
@@ -29,14 +35,32 @@
         </div>
         <div class="card border-info p-3 availability" th:object="${house.bookings}">
             <h3>Availability</h3>
-            <div th:unless="${house.bookings.isEmpty}">This house is available for the following periods:</div>
             <div th:if="${house.bookings.isEmpty}">This house is not available at any time for now</div>
             <!--/*@thymesVar id="booking" type="isep.webtechnologies.homekeep.models.house.HouseBooking"*/-->
-            <div th:each="booking : ${house.bookings}" th:if="${booking.isAvailable}" class="booking">
+            <div th:each="booking : ${house.bookings}" th:if="${booking.isAvailable}" class="booking" hidden>
                 <span class="startDate" th:text="${booking.startDate}"></span>
                 <span> - </span>
                 <span class="endDate" th:text="${booking.endDate}"></span>
             </div>
+            <form id="house-booking">
+                <h5>Send a booking request</h5>
+                <input name="house" th:value="${house.id}" hidden required>
+                <div class="input-group input-daterange">
+                    <label for="startDate">
+                        Start date
+                        <input name="startDate" id="startDate" type="text" class="form-control" required>
+                    </label>
+                    <label for="endDate">
+                        End date
+                        <input name="endDate" id="endDate" type="text" class="form-control" required>
+                    </label>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-secondary" sec:authorize="!isAuthenticated()" disabled
+                        data-toggle="tooltip" data-placement="top" title="Login to book">Book this house
+                </button>
+                <button type="submit" class="btn btn-primary" sec:authorize="isAuthenticated()">Book this house</button>
+            </form>
         </div>
     </div>
     <div class="md-space"></div>
