@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import isep.webtechnologies.homekeep.models.house.House;
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.house.HouseBookingRepository;
+import isep.webtechnologies.homekeep.models.user.Message;
+import isep.webtechnologies.homekeep.models.user.MessageRepository;
 import isep.webtechnologies.homekeep.models.user.User;
 
 @Controller
@@ -25,6 +27,8 @@ import isep.webtechnologies.homekeep.models.user.User;
 public class HouseBookingRepositoryController {
 	@Autowired
 	private HouseBookingRepository repository;
+	@Autowired
+	private MessageRepository messageRepository;
 
 	@GetMapping
 	public @ResponseBody Iterable<HouseBooking> getAllBookings() {
@@ -48,7 +52,10 @@ public class HouseBookingRepositoryController {
 		@RequestParam("endDate") Date endDate
 	) {
 		HouseBooking booking = new HouseBooking(house, booker, isAvailable, startDate, endDate);
-		return repository.save(booking);
+		booking = repository.save(booking);
+		Message message = new Message(booker, house.getOwner(), null, booking);
+		messageRepository.save(message);
+		return booking;
 	}
 
 	@DeleteMapping(path = "/{id}")

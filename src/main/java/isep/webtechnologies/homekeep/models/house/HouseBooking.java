@@ -1,6 +1,7 @@
 package isep.webtechnologies.homekeep.models.house;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,6 +16,12 @@ import isep.webtechnologies.homekeep.models.user.User;
 
 @Entity
 public class HouseBooking {
+	public enum Status {
+		PENDING,
+		ACCEPTED,
+		DENIED;
+	}
+
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -48,6 +55,14 @@ public class HouseBooking {
 	private Date endDate;
 	public Date getEndDate() {
 		return endDate;
+	}
+
+	private Status status = Status.PENDING;
+	public Status getStatus() {
+		return Optional.ofNullable(status).orElse(Status.PENDING);
+	}
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	HouseBooking() {}
