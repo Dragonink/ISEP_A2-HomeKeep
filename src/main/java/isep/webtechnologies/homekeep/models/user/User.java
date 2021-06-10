@@ -50,6 +50,7 @@ public class User implements UserDetails {
 
 	private String password;
 	@Override
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
