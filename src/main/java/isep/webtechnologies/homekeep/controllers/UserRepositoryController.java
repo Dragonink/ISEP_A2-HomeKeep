@@ -1,7 +1,7 @@
 package isep.webtechnologies.homekeep.controllers;
 
 import java.sql.Blob;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

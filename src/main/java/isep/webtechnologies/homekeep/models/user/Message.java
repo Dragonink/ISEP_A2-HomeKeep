@@ -1,6 +1,6 @@
 package isep.webtechnologies.homekeep.models.user;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;

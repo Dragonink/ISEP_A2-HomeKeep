@@ -1,6 +1,8 @@
 package isep.webtechnologies.homekeep.controllers;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -53,7 +55,14 @@ public class HouseRepositoryController {
 		Model model
 	) {
 		Stream<House> resultsByTitle = StreamSupport.stream(repository.searchByTitle(title).spliterator(), false);
-		Function<String, Date> convertDate = date -> date.length() == 10 ? Date.valueOf(date) : null;
+		Function<String, Date> convertDate = date -> {
+			try {
+				return date.length() == 10 ? new SimpleDateFormat("yyyy-MM-dd").parse(date) : null;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return null;
+		};
 		Set<House> resultsByDate = StreamSupport.stream(repository.searchByDate(startDate.map(convertDate), endDate.map(convertDate)).spliterator(), false).collect(Collectors.toSet());
 		Set<House> resultsByPersonNumber = StreamSupport.stream(repository.searchByPersonNumber(persons, babies).spliterator(), false).collect(Collectors.toSet());
 		model.addAttribute("search", resultsByTitle
@@ -63,11 +72,13 @@ public class HouseRepositoryController {
 		return "index";
 	}
 
-	@GetMapping(path = "/{id}")
-	public @ResponseBody Optional<House> getHouseById(
-		@PathVariable Integer id
-	) {
-		return repository.findById(id);
+	@GetMapping (path = "/{id}")
+	public String getHouseById(@PathVariable Integer id, Model model){
+		Optional<House> house = repository.findById(id);
+		house.ifPresent(value -> model.addAttribute("house", value));
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		model.addAttribute("currentUser", currentUser);
+		return "/housedetails";
 	}
 
 	@GetMapping(path = "/user")

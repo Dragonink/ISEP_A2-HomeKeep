@@ -1,30 +1,37 @@
 package isep.webtechnologies.homekeep.controllers;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import isep.webtechnologies.homekeep.models.house.House;
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
+import isep.webtechnologies.homekeep.models.house.HouseBooking.Status;
 import isep.webtechnologies.homekeep.models.house.HouseBookingRepository;
+import isep.webtechnologies.homekeep.models.user.Message;
+import isep.webtechnologies.homekeep.models.user.MessageRepository;
 import isep.webtechnologies.homekeep.models.user.User;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(path = "/api/bookings")
 public class HouseBookingRepositoryController {
 	@Autowired
 	private HouseBookingRepository repository;
+	@Autowired
+	private MessageRepository messageRepository;
 
 	@GetMapping
 	public @ResponseBody Iterable<HouseBooking> getAllBookings() {
@@ -39,16 +46,33 @@ public class HouseBookingRepositoryController {
 	}
 
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
-	public @ResponseBody HouseBooking addBooking(
+	public RedirectView addBooking(
 		@RequestParam("house") House house,
 		@RequestParam("booker") User booker,
 		@RequestParam("isAvailable") Boolean isAvailable,
-		@RequestParam("startDate") Date startDate,
-		@RequestParam("endDate") Date endDate
+		@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate,
+		@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
 	) {
 		HouseBooking booking = new HouseBooking(house, booker, isAvailable, startDate, endDate);
-		return repository.save(booking);
+		booking = repository.save(booking);
+		if (booker != house.getOwner()) {
+			Message message = new Message(booker, house.getOwner(), null, booking);
+			messageRepository.save(message);
+		}
+		return new RedirectView("/api/houses/"+house.getId());
+	}
+
+	@PatchMapping(path = "/{id}")
+	public @ResponseBody Optional<HouseBooking> changeBookingStatus(
+		@PathVariable Integer id,
+		@RequestParam("status") String status
+	) {
+		//TODO update the bookings on the same dates
+		return repository.findById(id)
+			.map(booking -> {
+				booking.setStatus(Status.valueOf(status.toUpperCase(Locale.ROOT)));
+				return repository.save(booking);
+			});
 	}
 
 	@DeleteMapping(path = "/{id}")
