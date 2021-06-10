@@ -2,6 +2,7 @@ package isep.webtechnologies.homekeep;
 
 import isep.webtechnologies.homekeep.models.house.HouseAmenities;
 import isep.webtechnologies.homekeep.models.house.HouseRules;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,18 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
+    public StringToHouseRulesConverter stringToHouseRulesConverter() {
+        return new StringToHouseRulesConverter();
+    }
+
+    @Bean
     public StringArrayToHouseAmenitiesConverter stringArrayToHouseAmenitiesConverter() {
         return new StringArrayToHouseAmenitiesConverter();
+    }
+
+    @Bean
+    public StringToHouseAmenitiesConverter stringToHouseAmenitiesConverter() {
+        return new StringToHouseAmenitiesConverter();
     }
 
     @Bean
@@ -48,6 +59,16 @@ class StringArrayToHouseRulesConverter implements Converter<String[], HouseRules
 }
 
 @Component
+class StringToHouseRulesConverter implements Converter<String, HouseRules> {
+    @Autowired
+    StringArrayToHouseRulesConverter stringArrayToHouseRulesConverter;
+    @Override
+    public HouseRules convert(String string) {
+        return stringArrayToHouseRulesConverter.convert(new String[] {string});
+    }
+}
+
+@Component
 class StringArrayToHouseAmenitiesConverter implements Converter<String[], HouseAmenities> {
     @Override
     public HouseAmenities convert(String[] strings) {
@@ -66,6 +87,16 @@ class StringArrayToHouseAmenitiesConverter implements Converter<String[], HouseA
         boolean disabledAccessible = (stringList.contains("disabledAccessible"));
         return new HouseAmenities(0, 0, 0, parking, heatingSystem, coolingSystem, shower,
                 freezer, microwave, oven, barbecue, dishwasher, washingMachine, swimmingPool, disabledAccessible);
+    }
+}
+
+@Component
+class StringToHouseAmenitiesConverter implements Converter<String, HouseAmenities> {
+    @Autowired
+    StringArrayToHouseAmenitiesConverter stringArrayToHouseAmenitiesConverter;
+    @Override
+    public HouseAmenities convert(String string) {
+        return stringArrayToHouseAmenitiesConverter.convert(new String[] {string});
     }
 }
 

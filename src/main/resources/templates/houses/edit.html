@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>House edit</title>
+    <script type="text/javascript" th:src="@{/js/house-edit.js}"></script>
+</head>
+
+<body>
+<header th:replace="global :: header"></header>
+<div class="container card p-3">
+    <form id="house-form" th:if="${house!=null}" th:action="@{'/api/houses/'+${house.id}}">
+        <h2 style="text-align: center">Add your home</h2>
+        <div class="row">
+            <div class="col-6">
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="title">Title</label>
+                    <input class="form-control col-9" type="text" id="title" name="title" autofocus="autofocus"
+                           required th:value="${house.title}"/>
+                </div>
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="description">Description</label>
+                    <textarea class="form-control col-9" id="description" name="description" required
+                              th:text="${house.description.orElse('')}"></textarea>
+                </div>
+            </div>
+            <div class="form-group col-6" th:if="${house.location!=null}">
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="country">Country</label>
+                    <input class="form-control col-9" type="text" id="country" name="country"
+                           th:value="${house.location.country}" required/>
+                </div>
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="region">Region</label>
+                    <input class="form-control col-9" type="text" id="region" name="region"
+                           th:value="${house.location.region}" required/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4" th:if="${house.rules!=null}">
+                <h4>Rules</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="smokersWelcome" name="rules"
+                           value="smokersWelcome" th:checked="${house.rules.smokersWelcome}">
+                    <label class="form-check-label" for="smokersWelcome">Smokers Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="childrenWelcome" name="rules"
+                           value="childrenWelcome" th:checked="${house.rules.childrenWelcome}">
+                    <label class="form-check-label" for="childrenWelcome">Children Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="petsWelcome" name="rules" value="petsWelcome"
+                           th:checked="${house.rules.petsWelcome}">
+                    <label class="form-check-label" for="petsWelcome">Pets Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="petsToFeed" name="rules" value="petsToFeed"
+                           th:checked="${house.rules.petsToFeed}">
+                    <label class="form-check-label" for="petsToFeed">Pets to feed</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="plantsToWater" name="rules"
+                           value="plantsToWater" th:checked="${house.rules.plantsToWater}">
+                    <label class="form-check-label" for="plantsToWater">Plants to water</label>
+                </div>
+            </div>
+            <div class="form-group col-8" th:if="${house.amenities!=null}">
+                <h4>Amenities</h4>
+                <div class="form-group row">
+                    <input class="form-control col-sm-1" type="number" id="beds" name="beds"
+                           th:value="${house.amenities.beds}" required>
+                    <label class="col-form-label col-sm-3" for="beds">Beds number</label>
+                    <input class="form-control col-sm-1" type="number" id="doubleBeds" name="doubleBeds"
+                           th:value="${house.amenities.doubleBeds}"
+                           required>
+                    <label class="col-form-label col-sm-3" for="doubleBeds">Double beds number</label>
+                    <input class="form-control col-sm-1" type="number" id="babyBeds" name="babyBeds"
+                           th:value="${house.amenities.babyBeds}" required>
+                    <label class="col-form-label col-sm-3" for="babyBeds">Baby beds number</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="parking" name="amenities"
+                                   value="parking" th:checked="${house.amenities.parking}">
+                            <label class="form-check-label" for="parking">Parking</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="heatingSystem" name="amenities"
+                                   value="heatingSystem" th:checked="${house.amenities.heatingSystem}">
+                            <label class="form-check-label" for="heatingSystem">Heating system</label>
+
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="coolingSystem" name="amenities"
+                                   value="coolingSystem" th:checked="${house.amenities.coolingSystem}">
+                            <label class="form-check-label" for="coolingSystem">Cooling system</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="shower" name="amenities" value="shower"
+                                   th:checked="${house.amenities.shower}">
+                            <label class="form-check-label" for="shower">Shower</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="freezer" name="amenities"
+                                   value="freezer" th:checked="${house.amenities.freezer}">
+                            <label class="form-check-label" for="freezer">Freezer</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="microwave" name="amenities"
+                                   value="microwave" th:checked="${house.amenities.microwave}">
+                            <label class="form-check-label" for="microwave">Microwave</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="oven" name="amenities" value="oven"
+                                   th:checked="${house.amenities.oven}">
+                            <label class="form-check-label" for="oven">Oven</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="barbecue" name="amenities"
+                                   value="barbecue" th:checked="${house.amenities.barbecue}">
+                            <label class="form-check-label" for="barbecue">Barbecue</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="dishwasher" name="amenities"
+                                   value="dishwasher" th:checked="${house.amenities.dishwasher}">
+                            <label class="form-check-label" for="dishwasher">Dishwasher</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="washingMachine" name="amenities"
+                                   value="washingMachine" th:checked="${house.amenities.washingMachine}">
+                            <label class="form-check-label" for="washingMachine">Washing machine</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="swimmingPool" name="amenities"
+                                   value="swimmingPool" th:checked="${house.amenities.swimmingPool}">
+                            <label class="form-check-label" for="swimmingPool">Swimming pool</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="disabledAccessible" name="amenities"
+                                   value="disabledAccessible" th:checked="${house.amenities.disabledAccessible}">
+                            <label class="form-check-label" for="disabledAccessible">Disabled accessible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col" for="images" style="text-align:right">Import photos of your house</label>
+            <input class="form-control-file col" type="file" name="images" id="images" multiple>
+        </div>
+        <div class="text-center">
+            <input class="btn btn-primary" id="submit" type="submit" value="Submit"/>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

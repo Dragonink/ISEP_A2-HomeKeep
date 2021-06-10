@@ -1,5 +1,6 @@
 package isep.webtechnologies.homekeep.controllers;
 
+import java.security.Principal;
 import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,11 +76,22 @@ public class HouseRepositoryController {
 
 	@GetMapping (path = "/{id}")
 	public String getHouseById(@PathVariable Integer id, Model model){
-		Optional<House> house = repository.findById(id);
-		house.ifPresent(value -> model.addAttribute("house", value));
-		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		House house = repository.findById(id).orElseThrow();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser = (principal instanceof User) ? userRepository.findById(((User) principal).getId()).orElseThrow() : null;
+		if (house.getOwner() == currentUser) return "redirect:edit/"+id;
+		model.addAttribute("house", house);
 		model.addAttribute("currentUser", currentUser);
 		return "/housedetails";
+	}
+
+	@GetMapping("/edit/{id}")
+	public String editHouse(@PathVariable Integer id, Model model) {
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		currentUser = userRepository.findById(currentUser.getId()).orElseThrow();
+		House house = repository.findById(id).orElseThrow();
+		if (house.getOwner()==currentUser) model.addAttribute("house", house);
+		return "/houses/edit";
 	}
 
 	@GetMapping(path = "/user")
@@ -118,20 +130,32 @@ public class HouseRepositoryController {
 	}
 
 	@PatchMapping(path = "/{id}")
-	public @ResponseBody Optional<House> editHouse(
+	public @ResponseBody House editHouse(
 		@PathVariable Integer id,
 		@RequestParam("title") Optional<String> title,
 		@RequestParam("description") Optional<String> description,
+		@RequestParam("country") Optional<String> country,
+		@RequestParam("region") Optional<String> region,
 		@RequestParam("rules") Optional<HouseRules> rules,
+		@RequestParam("beds") Optional<Integer> beds,
+		@RequestParam("doubleBeds") Optional<Integer> doubleBeds,
+		@RequestParam("babyBeds") Optional<Integer> babyBeds,
 		@RequestParam("amenities") Optional<HouseAmenities> amenities
 	) {
-		return repository.findById(id).map(house -> {
-			title.ifPresent(value -> house.setTitle(value));
-			description.ifPresent(value -> house.setDescription(value));
-			rules.ifPresent(value -> house.setRules(value));
-			amenities.ifPresent(value -> house.setAmenities(value));
-			return repository.save(house);
-		});
+		House house = repository.findById(id).orElseThrow();
+		title.ifPresent(house::setTitle);
+		description.ifPresent(house::setDescription);
+		HouseLocation houseLocation = new HouseLocation();
+		country.ifPresent(houseLocation::setCountry);
+		region.ifPresent(houseLocation::setRegion);
+		house.setLocation(houseLocation);
+		house.setRules(rules.orElse(new HouseRules()));
+		HouseAmenities houseAmenities = amenities.orElse(new HouseAmenities());
+		beds.ifPresent(houseAmenities::setBeds);
+		doubleBeds.ifPresent(houseAmenities::setDoubleBeds);
+		babyBeds.ifPresent(houseAmenities::setBabyBeds);
+		house.setAmenities(houseAmenities);
+		return repository.save(house);
 	}
 
 	@DeleteMapping(path = "/{id}")
