@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>My Bookings</title>
+</head>
+<body>
+<header th:replace="global :: header"></header>
+<div class="container">
+    <h1 class="center">My bookings</h1>
+    <div th:if="${bookings!=null}">
+        <!--/*@thymesVar id="booking" type="isep.webtechnologies.homekeep.models.house.HouseBooking"*/-->
+        <div th:each="booking : ${bookings}" class="card border row m-3"
+             th:classappend="${(booking.status == booking.status.ACCEPTED ? 'border-success':'')
+                             + (booking.status == booking.status.PENDING ? 'border-warning':'')
+                             + (booking.status == booking.status.DENIED ? 'border-danger':'')}">
+            <div class="card-body col" th:if="${booking.house!=null}">
+                <a class="link-unstyled" th:href="@{'/api/houses/'+${booking.house.id}}">
+                    <h5 th:text="${booking.house.title}"></h5>
+                    <div th:text="${booking.house.description.orElse('')}"></div>
+                </a>
+            </div>
+            <div class="card-body col">
+                <span th:text="${#dates.format(booking.startDate, 'dd/MM/yyyy')}"></span>
+                <span> - </span>
+                <span th:text="${#dates.format(booking.endDate, 'dd/MM/yyyy')}"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
