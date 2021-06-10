@@ -76,10 +76,11 @@ public class HouseRepositoryController {
 
 	@GetMapping (path = "/{id}")
 	public String getHouseById(@PathVariable Integer id, Model model){
-		Optional<House> house = repository.findById(id);
-		house.ifPresent(value -> model.addAttribute("house", value));
+		House house = repository.findById(id).orElseThrow();
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User currentUser = (principal instanceof User) ? userRepository.findById(((User) principal).getId()).orElseThrow() : null;
+		if (house.getOwner() == currentUser) return "redirect:edit/"+id;
+		model.addAttribute("house", house);
 		model.addAttribute("currentUser", currentUser);
 		return "/housedetails";
 	}
