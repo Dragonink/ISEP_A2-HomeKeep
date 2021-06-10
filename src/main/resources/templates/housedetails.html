@@ -67,57 +67,57 @@
     </div>
     <div class="md-space"></div>
     <div class="card-deck details">
-        <div class="card border-info p-3 amenities" th:object="${house.amenities}" th:if="${house.amenities}!=null">
+        <div class="card border-info p-3 amenities" th:if="${house.amenities}!=null">
             <h3>Amenities</h3>
             <div class="beds">
-                <span th:text="*{beds+ ' bed(s)'}"></span>
+                <span th:text="*{house.amenities.beds+ ' bed(s)'}"></span>
                 <span aria-hidden="true"> · </span>
-                <span th:text="*{doubleBeds+ ' double bed(s)'}"></span>
+                <span th:text="*{house.amenities.doubleBeds+ ' double bed(s)'}"></span>
                 <span aria-hidden="true"> · </span>
-                <span th:text="*{babyBeds+ ' baby bed(s)'}"></span>
+                <span th:text="*{house.amenities.babyBeds+ ' baby bed(s)'}"></span>
             </div>
             <div class="hvac">
                 <span>Heating and cooling: </span>
-                <span th:classappend="${(heatingSystem)} ? '' : 'strike-through'">heating system</span>
+                <span th:classappend="${(house.amenities.heatingSystem)} ? '' : 'strike-through'">heating system</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(coolingSystem)} ? '' : 'strike-through'">cooling system</span>
+                <span th:classappend="${(house.amenities.coolingSystem)} ? '' : 'strike-through'">cooling system</span>
             </div>
             <div class="bathroom">
                 <span>Bathroom: </span>
-                <span th:classappend="${(shower)} ? '' : 'strike-through'">shower</span>
+                <span th:classappend="${(house.amenities.shower)} ? '' : 'strike-through'">shower</span>
             </div>
             <div class="appliances">
                 <span>Appliances: </span>
-                <span th:classappend="${(freezer)} ? '' : 'strike-through'">freezer</span>
+                <span th:classappend="${(house.amenities.freezer)} ? '' : 'strike-through'">freezer</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(microwave)} ? '' : 'strike-through'">microwave</span>
+                <span th:classappend="${(house.amenities.microwave)} ? '' : 'strike-through'">microwave</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(oven)} ? '' : 'strike-through'">oven</span>
+                <span th:classappend="${(house.amenities.oven)} ? '' : 'strike-through'">oven</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(dishwasher)} ? '' : 'strike-through'">dishwasher</span>
+                <span th:classappend="${(house.amenities.dishwasher)} ? '' : 'strike-through'">dishwasher</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(washingMachine)} ? '' : 'strike-through'">washingMachine</span>
+                <span th:classappend="${(house.amenities.washingMachine)} ? '' : 'strike-through'">washingMachine</span>
             </div>
             <div class="outdoor">
                 <span>Outdoor: </span>
-                <span th:classappend="${(swimmingPool)} ? '' : 'strike-through'">swimming pool</span>
+                <span th:classappend="${(house.amenities.swimmingPool)} ? '' : 'strike-through'">swimming pool</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(barbecue)} ? '' : 'strike-through'">barbecue</span>
+                <span th:classappend="${(house.amenities.barbecue)} ? '' : 'strike-through'">barbecue</span>
             </div>
             <div class="accessibility">
                 <span>Accessibility: </span>
-                <span th:classappend="${(disabledAccessible)} ? '' : 'strike-through'">disabled accessible</span>
+                <span th:classappend="${(house.amenities.disabledAccessible)} ? '' : 'strike-through'">disabled accessible</span>
                 <span aria-hidden="true"> · </span>
-                <span th:classappend="${(parking)} ? '' : 'strike-through'">parking</span>
+                <span th:classappend="${(house.amenities.parking)} ? '' : 'strike-through'">parking</span>
             </div>
         </div>
-        <div class="card border-info p-3 rules" th:object="${house.rules}" th:if="${house.rules}!=null">
+        <div class="card border-info p-3 rules" th:if="${house.rules}!=null">
             <h3>Rules</h3>
-            <div th:text="'Smokers welcome: '+(${(smokersWelcome)} ? 'yes' : 'no')"></div>
-            <div th:text="'Childrens welcome: '+(${(childrenWelcome)} ? 'yes' : 'no')"></div>
-            <div th:text="'Pets welcome: '+(${(petsWelcome)} ? 'yes' : 'no')"></div>
-            <div th:text="'Pets to feed: '+(${(petsToFeed)} ? 'yes' : 'no')"></div>
-            <div th:text="'Plants to water: '+(${(plantsToWater)} ? 'yes' : 'no')"></div>
+            <div th:text="'Smokers welcome: '+(${(house.rules.smokersWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Childrens welcome: '+(${(house.rules.childrenWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Pets welcome: '+(${(house.rules.petsWelcome)} ? 'yes' : 'no')"></div>
+            <div th:text="'Pets to feed: '+(${(house.rules.petsToFeed)} ? 'yes' : 'no')"></div>
+            <div th:text="'Plants to water: '+(${(house.rules.plantsToWater)} ? 'yes' : 'no')"></div>
         </div>
     </div>
     <div class="md-space"></div>
