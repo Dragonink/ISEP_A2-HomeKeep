@@ -2,44 +2,79 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>New home</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" th:src="@{/js/addHome.js}"></script>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>New home</title>
+    <script type="text/javascript" th:src="@{/js/addHome.js}"></script>
 </head>
 
 <body>
-  <div class="container">
+<header th:replace="global :: header"></header>
+<div class="container">
     <form id="addHome-form" th:action="@{/api/houses}" method="post">
-      <h1>Add your home</h1>
-      <label for="title">Title</label>
-      <input type="text" id="title" name="title" autofocus="autofocus" />
-      <!--<label for="description">Description</label>
-    <input type="text" id="description" name="description"/>
-    <input type="number" id="Owner" name="owner" th:value="${user.id}"/>
-    <label for="address">Address</label>
-    <input type="text" id="address" name="address"/>
+        <h1>Add your home</h1>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" autofocus="autofocus" required/>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" required/>
+        <input type="number" id="Owner" name="owner" th:value="${user.id}" hidden required/>
 
-    <label for="country">Country</label>
-    <input type="text" id="country" name="country"/>
-    <label for="region">Region</label>
-    <input type="text" id="region" name="region"/>
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" class="location" required/>
+        <label for="region">Region</label>
+        <input type="text" id="region" name="region" class="location" required/>
 
-    <input type="checkbox" id="smokersWelcome" name="smokersWelcome" checked>
-    <label for="smokersWelcome">Smokers Welcome</label>
-    <input type="checkbox" id="childrenWelcome" name="childrenWelcome" checked>
-    <label for="childrenWelcome">Children Welcome</label>
-    <input type="checkbox" id="petsWelcome" name="petsWelcome" checked>
-    <label for="petsWelcome">Pets Welcome</label>
-    <input type="checkbox" id="petsToFeed" name="petsToFeed" checked>
-    <label for="petsToFeed">Pets to feed</label>
-    <input type="checkbox" id="plantsToWater" name="plantsToWater" checked>
-    <label for="plantsToWater">Plants to water</label>
-    -->
+        <input type="checkbox" id="smokersWelcome" name="rules" value="smokersWelcome">
+        <label for="smokersWelcome">Smokers Welcome</label>
+        <input type="checkbox" id="childrenWelcome" name="rules" value="childrenWelcome">
+        <label for="childrenWelcome">Children Welcome</label>
+        <input type="checkbox" id="petsWelcome" name="rules" value="petsWelcome">
+        <label for="petsWelcome">Pets Welcome</label>
+        <input type="checkbox" id="petsToFeed" name="rules" value="petsToFeed">
+        <label for="petsToFeed">Pets to feed</label>
+        <input type="checkbox" id="plantsToWater" name="rules" value="plantsToWater">
+        <label for="plantsToWater">Plants to water</label>
 
-      <input id="submit" type="submit" value="Submit" />
+        <h3>Amenities</h3>
+        <div class="beds">
+            <label for="beds">Beds number</label>
+            <input type="number" id="beds" name="beds" value=0 required>
+            <label for="doubleBeds">Double beds number</label>
+            <input type="number" id="doubleBeds" name="doubleBeds" value=0 required>
+            <label for="babyBeds">Baby beds number</label>
+            <input type="number" id="babyBeds" name="babyBeds" value=0 required>
+        </div>
+
+        <label for="parking">Parking</label>
+        <input type="checkbox" id="parking" name="amenities" value="parking">
+        <label for="heatingSystem">Heating system</label>
+        <input type="checkbox" id="heatingSystem" name="amenities" value="heatingSystem">
+        <label for="coolingSystem">Cooling system</label>
+        <input type="checkbox" id="coolingSystem" name="amenities" value="coolingSystem">
+        <label for="shower">Shower</label>
+        <input type="checkbox" id="shower" name="amenities" value="shower">
+        <label for="freezer">Freezer</label>
+        <input type="checkbox" id="freezer" name="amenities" value="freezer">
+        <label for="microwave">Microwave</label>
+        <input type="checkbox" id="microwave" name="amenities" value="microwave">
+        <label for="oven">Oven</label>
+        <input type="checkbox" id="oven" name="amenities" value="oven">
+        <label for="barbecue">Barbecue</label>
+        <input type="checkbox" id="barbecue" name="amenities" value="barbecue">
+        <label for="dishwasher">Dishwasher</label>
+        <input type="checkbox" id="dishwasher" name="amenities" value="dishwasher">
+        <label for="washingMachine">washingMachine</label>
+        <input type="checkbox" id="washingMachine" name="amenities" value="washingMachine">
+        <label for="swimmingPool">Swimming pool</label>
+        <input type="checkbox" id="swimmingPool" name="amenities" value="swimmingPool">
+        <label for="disabledAccessible">Disabled accessible</label>
+        <input type="checkbox" id="disabledAccessible" name="amenities" value="disabledAccessible">
+
+        <label for="images">Import photos of your house</label>
+        <input type="file" name="images" id="images" multiple>
+
+        <input id="submit" type="submit" value="Submit"/>
     </form>
-  </div>
+</div>
 </body>
 
 </html>

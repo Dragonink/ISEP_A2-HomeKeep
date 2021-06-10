@@ -44,7 +44,7 @@ public class HouseRules {
 		this.plantsToWater = plantsToWater;
 	}
 
-	HouseRules() {}
+	public HouseRules() {}
 	public HouseRules(Boolean smokersWelcome, Boolean childrenWelcome, Boolean petsWelcome, Boolean petsToFeed, Boolean plantsToWater) {
 		this.smokersWelcome = smokersWelcome;
 		this.childrenWelcome = childrenWelcome;

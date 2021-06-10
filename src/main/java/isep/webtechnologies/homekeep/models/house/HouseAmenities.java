@@ -124,7 +124,7 @@ public class HouseAmenities {
 		this.disabledAccessible = disabledAccessible;
 	}
 
-	HouseAmenities() {}
+	public HouseAmenities() {}
 	public HouseAmenities(Integer beds, Integer doubleBeds, Integer babyBeds, Boolean parking, Boolean heatingSystem, Boolean coolingSystem, Boolean shower, Boolean freezer, Boolean microwave, Boolean oven, Boolean barbecue, Boolean dishwasher, Boolean washingMachine, Boolean swimmingPool, Boolean disabledAccessible) {
 		this.beds = beds;
 		this.doubleBeds = doubleBeds;

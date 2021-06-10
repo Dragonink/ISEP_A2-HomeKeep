@@ -19,7 +19,7 @@ function submitForm(e) {
     }).then(
         () => {
             alert("Home added");
-            location.replace("/");
+            location.replace("/api/houses/user");
         }
     ).catch((e) => {
         alert(e);

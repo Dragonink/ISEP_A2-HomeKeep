@@ -1,9 +1,6 @@
 package isep.webtechnologies.homekeep.models.house;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,6 +56,9 @@ public class House {
 	public HouseLocation getLocation() {
 		return location;
 	}
+	public void setLocation(HouseLocation location) {
+		this.location = location;
+	}
 
 	@Embedded
 	private HouseRules rules;
@@ -112,5 +112,16 @@ public class House {
 		this.owner = owner;
 		this.ownerId = owner.getId();
 		this.title = title;
+	}
+
+	public House(User owner, String title, String description, HouseLocation location,
+				 HouseRules rules, HouseAmenities amenities) {
+		this.ownerId = owner.getId();
+		this.owner = owner;
+		this.title = title;
+		this.description = description;
+		this.location = location;
+		this.rules = rules;
+		this.amenities = amenities;
 	}
 }
