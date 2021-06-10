@@ -16,6 +16,7 @@
             <img class="img-responsive" th:src="@{/images/homekeep_logo.png}" alt="homekeep_logo">
         </a>
         <ul class="navbar-nav ml-auto" sec:authorize="!isAuthenticated()">
+            <li><a th:href="@{/registration}" class="nav-link">Registration</a></li>
             <li><a th:href="@{/login}" class="nav-link">Login</a></li>
         </ul>
 
