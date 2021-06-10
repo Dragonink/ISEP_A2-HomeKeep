@@ -1,5 +1,6 @@
 package isep.webtechnologies.homekeep.security;
 
+import isep.webtechnologies.homekeep.models.user.User;
 import isep.webtechnologies.homekeep.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +20,7 @@ public class AppAuthProvider extends DaoAuthenticationProvider {
         String email = auth.getName();
         String providedPassword = auth.getCredentials().toString();
         UserDetails user = userDetailsService.loadUserByUsername(email);
-        if (!providedPassword.equals(user.getPassword())) {
+        if (!User.encryptPassword(providedPassword).equals(user.getPassword())) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
         return new UsernamePasswordAuthenticationToken(user, providedPassword, user.getAuthorities());

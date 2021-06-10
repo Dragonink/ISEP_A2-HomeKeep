@@ -1,8 +1,10 @@
 package isep.webtechnologies.homekeep.models.user;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -19,11 +21,12 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import isep.webtechnologies.homekeep.models.house.House;
 import isep.webtechnologies.homekeep.models.house.HouseBooking;
 import isep.webtechnologies.homekeep.models.house.HouseRating;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -46,8 +49,25 @@ public class User implements UserDetails {
 	}
 
 	private String password;
+	@Override
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+	public static String encryptPassword(String password) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			digest.update(password.getBytes());
+			return new String(digest.digest());
+		} catch (NoSuchAlgorithmException error) {
+			return null;
+		}
+	}
+	public boolean checkPassword(String password) {
+		return this.password.equals(User.encryptPassword(password));
+	}
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = User.encryptPassword(password);
 	}
 
 	@Override
@@ -55,18 +75,10 @@ public class User implements UserDetails {
 		return null;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
 	@Override
 	public String getUsername() {
 		//required by UserDetails for authentication but email is used instead
 		return email;
-	}
-
-	public Boolean comparePassword(String password) {
-		return this.password.equals(password);
 	}
 
 	@Override
@@ -164,7 +176,7 @@ public class User implements UserDetails {
 	User() {}
 	public User(String email, String password, String firstname, String lastname, String address, String country) {
 		this.email = email;
-		this.password = password;
+		setPassword(password);
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
