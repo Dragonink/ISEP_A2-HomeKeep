@@ -55,7 +55,7 @@ public class HouseBookingRepositoryController {
 	) {
 		HouseBooking booking = new HouseBooking(house, booker, isAvailable, startDate, endDate);
 		booking = repository.save(booking);
-		if (booker.getId() != house.getOwner().getId()) {
+		if (booker != house.getOwner()) {
 			Message message = new Message(booker, house.getOwner(), null, booking);
 			messageRepository.save(message);
 		}

@@ -72,6 +72,6 @@ public class HouseBooking {
 		this.isAvailable = isAvailable;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.status = booker.getId() == house.getOwner().getId() ? Status.ACCEPTED : Status.PENDING;
+		this.status = booker == house.getOwner() ? Status.ACCEPTED : Status.PENDING;
 	}
 }
