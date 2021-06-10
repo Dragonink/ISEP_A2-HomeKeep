@@ -1,8 +1,10 @@
 package isep.webtechnologies.homekeep.controllers;
 
+import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import isep.webtechnologies.homekeep.models.house.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import isep.webtechnologies.homekeep.models.house.House;
-import isep.webtechnologies.homekeep.models.house.HouseAmenities;
-import isep.webtechnologies.homekeep.models.house.HouseRepository;
-import isep.webtechnologies.homekeep.models.house.HouseRules;
 import isep.webtechnologies.homekeep.models.user.User;
 import isep.webtechnologies.homekeep.models.user.UserRepository;
 
@@ -39,6 +38,8 @@ public class HouseRepositoryController {
 	private HouseRepository repository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private HouseImageRepository houseImageRepository;
 
 	@GetMapping
 	public @ResponseBody Iterable<House> getAllHouses() {
@@ -92,12 +93,28 @@ public class HouseRepositoryController {
 	@PostMapping(consumes = {"multipart/form-data"})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody House addHouse(
-		@RequestParam("title") String title
+			@RequestParam("title") String title,
+			@RequestParam("description") String description,
+			@RequestParam("country") String country,
+			@RequestParam("region") String region,
+			@RequestParam("rules") Optional<HouseRules> rules,
+			@RequestParam("beds") Integer beds,
+			@RequestParam("doubleBeds") Integer doubleBeds,
+			@RequestParam("babyBeds") Integer babyBeds,
+			@RequestParam("amenities") Optional<HouseAmenities> amenities,
+			@RequestParam("images") List<Blob> images
 	) {
 		User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		owner = userRepository.findById(owner.getId()).orElseThrow();
-		House house = new House(owner, title);
-		return repository.save(house);
+		HouseAmenities houseAmenities = amenities.orElse(new HouseAmenities());
+		houseAmenities.setBeds(beds);
+		houseAmenities.setDoubleBeds(doubleBeds);
+		houseAmenities.setBabyBeds(babyBeds);
+		House house = new House(owner, title, description, new HouseLocation(country, region),
+				rules.orElse(new HouseRules()), houseAmenities);
+		repository.save(house);
+		for (Blob blob: images) houseImageRepository.save(new HouseImage(house, blob));
+		return house;
 	}
 
 	@PatchMapping(path = "/{id}")
