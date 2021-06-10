@@ -45,7 +45,7 @@
             <form id="house-booking" th:action="@{/api/bookings}" method="post">
                 <h5>Send a booking request</h5>
                 <input name="house" th:value="${house.id}" hidden required>
-                <input name="booker" th:value="${currentUser.id}" hidden required>
+                <input name="booker" th:if="${currentUser!=null}" th:value="${currentUser.id}" hidden required>
                 <input name="isAvailable" th:value="false" hidden required>
                 <div class="input-group input-daterange">
                     <label for="startDate">
@@ -58,10 +58,10 @@
                     </label>
                 </div>
                 <br>
-                <button type="submit" class="btn btn-secondary" sec:authorize="!isAuthenticated()" disabled
+                <button type="submit" class="btn btn-secondary" th:if="${currentUser==null}" disabled
                         data-toggle="tooltip" data-placement="top" title="Login to book">Book this house
                 </button>
-                <button type="submit" class="btn btn-primary" sec:authorize="isAuthenticated()">Book this house</button>
+                <button type="submit" class="btn btn-primary" th:if="${currentUser!=null}">Book this house</button>
             </form>
         </div>
     </div>

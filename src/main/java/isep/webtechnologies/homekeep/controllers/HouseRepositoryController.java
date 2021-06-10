@@ -1,5 +1,6 @@
 package isep.webtechnologies.homekeep.controllers;
 
+import java.security.Principal;
 import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,7 +78,8 @@ public class HouseRepositoryController {
 	public String getHouseById(@PathVariable Integer id, Model model){
 		Optional<House> house = repository.findById(id);
 		house.ifPresent(value -> model.addAttribute("house", value));
-		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser = (principal instanceof User) ? userRepository.findById(((User) principal).getId()).orElseThrow() : null;
 		model.addAttribute("currentUser", currentUser);
 		return "/housedetails";
 	}
