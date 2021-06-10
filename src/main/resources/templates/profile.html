@@ -7,23 +7,39 @@
 </head>
 <body>
 <header th:replace="global :: header"></header>
-<div class="container">
+<div class="container card p-3">
     <!--/*@thymesVar id="user" type="isep.webtechnologies.homekeep.models.user.User"*/-->
     <form id="edit-form" th:action="${'/api/users/'+user.id}" th:object="${user}">
-        <h1>Profile Page</h1>
-        <label for="firstname">First Name</label>
-        <input type="text" id="firstname" name="firstname" th:value="${user.firstname}" autofocus="autofocus"/>
-        <label for="lastname">Last Name</label>
-        <input type="text" id="lastname" name="lastname" th:value="${user.lastname}"/>
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email" th:value="${user.email}"/>
-        <label for="address">Address</label>
-        <input type="text" id="address" name="address" th:value="${user.address}"/>
-        <label for="country">Country</label>
-        <input type="text" id="country" name="country" th:value="${user.country}"/>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password"/>
-        <input id="submit" type="submit" value="Submit"/>
+        <h1 class="form-group text-center">Profile Page</h1>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="firstname">First Name</label>
+            <input class="form-control col-9" type="text" id="firstname" name="firstname" th:value="${user.firstname}"
+                   autofocus="autofocus"/>
+        </div>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="lastname">Last Name</label>
+            <input class="form-control col-9" type="text" id="lastname" name="lastname" th:value="${user.lastname}"/>
+        </div>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="email">Email</label>
+            <input class="form-control col-9" type="text" id="email" name="email" th:value="${user.email}"/>
+        </div>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="address">Address</label>
+            <input class="form-control col-9" type="text" id="address" name="address" th:value="${user.address}"/>
+        </div>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="country">Country</label>
+            <input class="form-control col-9" type="text" id="country" name="country" th:value="${user.country}"/>
+        </div>
+        <div class="form-group row px-3">
+            <label class="col-form-label col-3" for="password">Password</label>
+            <input class="form-control col-9" type="password" id="password" name="password"/>
+        </div>
+
+        <div class="text-center">
+            <input class="btn btn-primary" id="submit" type="submit" value="Submit"/>
+        </div>
     </form>
 </div>
 </body>
