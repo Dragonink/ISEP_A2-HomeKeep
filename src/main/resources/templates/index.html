@@ -12,69 +12,46 @@
 <body onload="initForm();">
 <header th:replace="global :: header"></header>
 <div class="container">
-    <h1>Welcome to HomeKeep!</h1>
+    <h1 class="text-center">Welcome to HomeKeep!</h1>
     <form id="search-houses" th:action="@{/api/houses/search}" th:object="${search}">
-        <div>
-            <input name="title" th:value="${param.title}" type="text" placeholder="Where would you like to go ?" autofocus />
+        <div class="form-group text-center">
+            <input name="title" th:value="${param.title}" type="text" placeholder="Where would you like to go ?"
+                   autofocus/>
             <button type="submit">
                 <span class="fa fa-search"></span>
                 Search
             </button>
         </div>
-        <fieldset>
-            <legend>Travel dates</legend>
-            <label>
-                From
-                <input name="startDate" th:value="${param.startDate}" type="date" />
-            </label>
-            <label>
-                To
-                <input name="endDate" th:value="${param.endDate}" type="date" />
-            </label>
-        </fieldset>
-        <fieldset>
-            <legend>Travelers</legend>
-            <label>
-                Number of persons
-                <input name="persons" th:value="${param.persons}" type="number" min="1" value="1" />
-            </label>
-            <label>
-                Number of babies
-                <input name="babies" th:value="${param.babies}" type="number" value="0" />
-            </label>
-        </fieldset>
+        <div class="row">
+            <fieldset class="col form-group text-center">
+                <legend>Travel dates</legend>
+                <br>
+                <label>
+                    From
+                    <input name="startDate" th:value="${param.startDate}" type="date"/>
+                </label>
+                <label>
+                    To
+                    <input name="endDate" th:value="${param.endDate}" type="date"/>
+                </label>
+            </fieldset>
+            <fieldset class="col form-group text-center row">
+                <legend>Travelers</legend>
+                <label class="col-6">
+                    Number of persons
+                    <input name="persons" th:value="${param.persons}" type="number" min="1" value="1"/>
+                </label>
+                <label class="col-6">
+                    Number of babies
+                    <input name="babies" th:value="${param.babies}" type="number" value="0"/>
+                </label>
+            </fieldset>
+        </div>
     </form>
     <output form="search-houses" th:if="${not #lists.isEmpty(search)}" style="width: 100%">
-        <div th:replace="housefragments :: housesList(houses=${search},
-         houseRedirectionBaseUrl='/house/')"></div>
+        <div th:replace="housefragments :: housesList(houses=${search},houseRedirectionBaseUrl='/house/')"></div>
     </output>
 </div>
-    <!-- <form name="searchForm">
-
-        <div class="selection">
-
-            <div class="filterdiv">
-                <button type="button" class="filters" onclick="showFilters()">Filters</button>
-            </div>
-            <div id="checkboxes" class="container checkboxes">
-                <ul class="checkbox-grid">
-                    <li><input type="checkbox" id="parking" name="advFilters" value="parking"> <label class="fltrs" for="parking">Parking</label></li>
-                    <li><input type="checkbox" id="heating" name="advFilters" value="heating"> <label class="fltrs" for="heating">Heating System</label></li>
-                    <li><input type="checkbox" id="cooling" name="advFilters" value="cooling"> <label class="fltrs" for="cooling">Cooling System</label></li>
-                    <li><input type="checkbox" id="shower" name="advFilters" value="shower"> <label class="fltrs" for="shower">Shower</label></li>
-                    <li><input type="checkbox" id="fridge" name="advFilters" value="fridge"> <label class="fltrs" for="fridge">Fridge</label></li>
-                    <li><input type="checkbox" id="freezer" name="advFilters" value="freezer"> <label class="fltrs" for="freezer">Freezer</label></li>
-                    <li><input type="checkbox" id="microwave" name="advFilters" value="microwave"> <label class="fltrs" for="microwave">Parking</label></li>
-                    <li><input type="checkbox" id="oven" name="advFilters" value="oven"> <label class="fltrs" for="oven">Oven</label></li>
-                    <li><input type="checkbox" id="barbecue" name="advFilters" value="barbecue"> <label class="fltrs" for="barbecue">Barbecue</label></li>
-                    <li><input type="checkbox" id="dishwasher" name="advFilters" value="dishwasher"> <label class="fltrs" for="dishwasher">Dishwasher</label></li>
-                    <li><input type="checkbox" id="wmachine" name="advFilters" value="wmachine"> <label class="fltrs" for="wmachine">Washing Machine</label></li>
-                    <li><input type="checkbox" id="pool" name="advFilters" value="pool"> <label class="fltrs" for="pool">Swimming Pool</label></li>
-                    <li><input type="checkbox" id="disabled" name="advFilters" value="disabled"> <label class="fltrs" for="disabled">Disabled Access</label></li>
-                </ul>
-            </div>
-        </div>
-    </form> -->
 </body>
 
 </html>
