@@ -72,10 +72,12 @@ public class HouseRepositoryController {
 		return "index";
 	}
 
-	@RequestMapping (path = "/{id}")
+	@GetMapping (path = "/{id}")
 	public String getHouseById(@PathVariable Integer id, Model model){
 		Optional<House> house = repository.findById(id);
 		house.ifPresent(value -> model.addAttribute("house", value));
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		model.addAttribute("currentUser", currentUser);
 		return "/housedetails";
 	}
 

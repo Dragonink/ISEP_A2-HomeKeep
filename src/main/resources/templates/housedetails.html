@@ -42,9 +42,11 @@
                 <span> - </span>
                 <span class="endDate" th:text="${booking.endDate}"></span>
             </div>
-            <form id="house-booking">
+            <form id="house-booking" th:action="@{/api/bookings}" method="post">
                 <h5>Send a booking request</h5>
                 <input name="house" th:value="${house.id}" hidden required>
+                <input name="booker" th:value="${currentUser.id}" hidden required>
+                <input name="isAvailable" th:value="false" hidden required>
                 <div class="input-group input-daterange">
                     <label for="startDate">
                         Start date
