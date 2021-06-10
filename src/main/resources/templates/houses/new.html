@@ -9,70 +9,151 @@
 
 <body>
 <header th:replace="global :: header"></header>
-<div class="container">
+<div class="container card p-3">
     <form id="addHome-form" th:action="@{/api/houses}" method="post">
-        <h1>Add your home</h1>
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" autofocus="autofocus" required/>
-        <label for="description">Description</label>
-        <input type="text" id="description" name="description" required/>
-        <input type="number" id="Owner" name="owner" th:value="${user.id}" hidden required/>
+        <h2 style="text-align: center">Add your home</h2>
+        <div class="row">
+            <div class="col-6">
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="title">Title</label>
+                    <input class="form-control col-9" type="text" id="title" name="title" autofocus="autofocus"
+                           required/>
+                </div>
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="description">Description</label>
+                    <textarea class="form-control col-9" id="description" name="description" required></textarea>
+                </div>
+                <input type="number" id="Owner" name="owner" th:value="${user.id}" hidden required/>
+            </div>
+            <div class="form-group col-6">
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="country">Country</label>
+                    <input class="form-control col-9" type="text" id="country" name="country" required/>
+                </div>
+                <div class="row form-group">
+                    <label class="col-form-label col-3" for="region">Region</label>
+                    <input class="form-control col-9" type="text" id="region" name="region" required/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <h4>Rules</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="smokersWelcome" name="rules"
+                           value="smokersWelcome">
+                    <label class="form-check-label" for="smokersWelcome">Smokers Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="childrenWelcome" name="rules"
+                           value="childrenWelcome">
+                    <label class="form-check-label" for="childrenWelcome">Children Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="petsWelcome" name="rules" value="petsWelcome">
+                    <label class="form-check-label" for="petsWelcome">Pets Welcome</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="petsToFeed" name="rules" value="petsToFeed">
+                    <label class="form-check-label" for="petsToFeed">Pets to feed</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="plantsToWater" name="rules"
+                           value="plantsToWater">
+                    <label class="form-check-label" for="plantsToWater">Plants to water</label>
+                </div>
+            </div>
+            <div class="form-group col-8">
+                <h4>Amenities</h4>
+                <div class="form-group row">
+                    <input class="form-control col-sm-1" type="number" id="beds" name="beds" value=0 required>
+                    <label class="col-form-label col-sm-3" for="beds">Beds number</label>
+                    <input class="form-control col-sm-1" type="number" id="doubleBeds" name="doubleBeds" value=0
+                           required>
+                    <label class="col-form-label col-sm-3" for="doubleBeds">Double beds number</label>
+                    <input class="form-control col-sm-1" type="number" id="babyBeds" name="babyBeds" value=0 required>
+                    <label class="col-form-label col-sm-3" for="babyBeds">Baby beds number</label>
+                </div>
 
-        <label for="country">Country</label>
-        <input type="text" id="country" name="country" class="location" required/>
-        <label for="region">Region</label>
-        <input type="text" id="region" name="region" class="location" required/>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="parking" name="amenities"
+                                   value="parking">
+                            <label class="form-check-label" for="parking">Parking</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="heatingSystem" name="amenities"
+                                   value="heatingSystem">
+                            <label class="form-check-label" for="heatingSystem">Heating system</label>
 
-        <input type="checkbox" id="smokersWelcome" name="rules" value="smokersWelcome">
-        <label for="smokersWelcome">Smokers Welcome</label>
-        <input type="checkbox" id="childrenWelcome" name="rules" value="childrenWelcome">
-        <label for="childrenWelcome">Children Welcome</label>
-        <input type="checkbox" id="petsWelcome" name="rules" value="petsWelcome">
-        <label for="petsWelcome">Pets Welcome</label>
-        <input type="checkbox" id="petsToFeed" name="rules" value="petsToFeed">
-        <label for="petsToFeed">Pets to feed</label>
-        <input type="checkbox" id="plantsToWater" name="rules" value="plantsToWater">
-        <label for="plantsToWater">Plants to water</label>
-
-        <h3>Amenities</h3>
-        <div class="beds">
-            <label for="beds">Beds number</label>
-            <input type="number" id="beds" name="beds" value=0 required>
-            <label for="doubleBeds">Double beds number</label>
-            <input type="number" id="doubleBeds" name="doubleBeds" value=0 required>
-            <label for="babyBeds">Baby beds number</label>
-            <input type="number" id="babyBeds" name="babyBeds" value=0 required>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="coolingSystem" name="amenities"
+                                   value="coolingSystem">
+                            <label class="form-check-label" for="coolingSystem">Cooling system</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="shower" name="amenities" value="shower">
+                            <label class="form-check-label" for="shower">Shower</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="freezer" name="amenities"
+                                   value="freezer">
+                            <label class="form-check-label" for="freezer">Freezer</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="microwave" name="amenities"
+                                   value="microwave">
+                            <label class="form-check-label" for="microwave">Microwave</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="oven" name="amenities" value="oven">
+                            <label class="form-check-label" for="oven">Oven</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="barbecue" name="amenities"
+                                   value="barbecue">
+                            <label class="form-check-label" for="barbecue">Barbecue</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="dishwasher" name="amenities"
+                                   value="dishwasher">
+                            <label class="form-check-label" for="dishwasher">Dishwasher</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="washingMachine" name="amenities"
+                                   value="washingMachine">
+                            <label class="form-check-label" for="washingMachine">Washing machine</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="swimmingPool" name="amenities"
+                                   value="swimmingPool">
+                            <label class="form-check-label" for="swimmingPool">Swimming pool</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="disabledAccessible" name="amenities"
+                                   value="disabledAccessible">
+                            <label class="form-check-label" for="disabledAccessible">Disabled accessible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <label for="parking">Parking</label>
-        <input type="checkbox" id="parking" name="amenities" value="parking">
-        <label for="heatingSystem">Heating system</label>
-        <input type="checkbox" id="heatingSystem" name="amenities" value="heatingSystem">
-        <label for="coolingSystem">Cooling system</label>
-        <input type="checkbox" id="coolingSystem" name="amenities" value="coolingSystem">
-        <label for="shower">Shower</label>
-        <input type="checkbox" id="shower" name="amenities" value="shower">
-        <label for="freezer">Freezer</label>
-        <input type="checkbox" id="freezer" name="amenities" value="freezer">
-        <label for="microwave">Microwave</label>
-        <input type="checkbox" id="microwave" name="amenities" value="microwave">
-        <label for="oven">Oven</label>
-        <input type="checkbox" id="oven" name="amenities" value="oven">
-        <label for="barbecue">Barbecue</label>
-        <input type="checkbox" id="barbecue" name="amenities" value="barbecue">
-        <label for="dishwasher">Dishwasher</label>
-        <input type="checkbox" id="dishwasher" name="amenities" value="dishwasher">
-        <label for="washingMachine">washingMachine</label>
-        <input type="checkbox" id="washingMachine" name="amenities" value="washingMachine">
-        <label for="swimmingPool">Swimming pool</label>
-        <input type="checkbox" id="swimmingPool" name="amenities" value="swimmingPool">
-        <label for="disabledAccessible">Disabled accessible</label>
-        <input type="checkbox" id="disabledAccessible" name="amenities" value="disabledAccessible">
-
-        <label for="images">Import photos of your house</label>
-        <input type="file" name="images" id="images" multiple>
-
-        <input id="submit" type="submit" value="Submit"/>
+        <div class="form-group row">
+            <label class="col" for="images" style="text-align:right">Import photos of your house</label>
+            <input class="form-control-file col" type="file" name="images" id="images" multiple>
+        </div>
+        <div class="text-center">
+            <input class="btn btn-primary" id="submit" type="submit" value="Submit"/>
+        </div>
     </form>
 </div>
 </body>
