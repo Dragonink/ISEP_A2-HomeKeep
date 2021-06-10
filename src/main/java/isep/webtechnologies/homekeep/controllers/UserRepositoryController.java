@@ -45,7 +45,7 @@ public class UserRepositoryController {
 	) {
 		return repository.findByEmail(email)
 			.map(user -> {
-				if (user.comparePassword(password)) {
+				if (user.checkPassword(password)) {
 					return user;
 				} else {
 					return null;
