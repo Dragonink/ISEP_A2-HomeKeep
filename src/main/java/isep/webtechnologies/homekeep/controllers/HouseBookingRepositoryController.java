@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
+import isep.webtechnologies.homekeep.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +33,8 @@ import org.springframework.web.servlet.view.RedirectView;
 public class HouseBookingRepositoryController {
 	@Autowired
 	private HouseBookingRepository repository;
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private MessageRepository messageRepository;
 
@@ -73,6 +78,15 @@ public class HouseBookingRepositoryController {
 				booking.setStatus(Status.valueOf(status.toUpperCase(Locale.ROOT)));
 				return repository.save(booking);
 			});
+	}
+
+	@GetMapping(path="/user")
+	public String getUserBookings(Model model) {
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		currentUser = userRepository.findById(currentUser.getId()).orElseThrow();
+		model.addAttribute("bookings", currentUser.getBookings());
+		model.addAttribute("statuses", Status.values());
+		return "/bookings";
 	}
 
 	@DeleteMapping(path = "/{id}")
