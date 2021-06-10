@@ -1,7 +1,7 @@
 package isep.webtechnologies.homekeep.models.user;
 
 import java.sql.Blob;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;

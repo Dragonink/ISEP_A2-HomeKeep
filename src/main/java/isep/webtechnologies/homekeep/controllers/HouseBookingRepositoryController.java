@@ -1,10 +1,11 @@
 package isep.webtechnologies.homekeep.controllers;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,8 +52,8 @@ public class HouseBookingRepositoryController {
 		@RequestParam("house") House house,
 		@RequestParam("booker") User booker,
 		@RequestParam("isAvailable") Boolean isAvailable,
-		@RequestParam("startDate") Date startDate,
-		@RequestParam("endDate") Date endDate
+		@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate,
+		@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
 	) {
 		HouseBooking booking = new HouseBooking(house, booker, isAvailable, startDate, endDate);
 		booking = repository.save(booking);
