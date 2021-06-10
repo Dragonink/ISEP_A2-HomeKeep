@@ -4,6 +4,7 @@
 	 <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
     <title>HomeKeep</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}">
+    <script type="text/javascript" th:src="@{/js/messages.js}"></script>
 	</head>
 	<body>
 		<header th:replace="global :: header"></header>
@@ -15,7 +16,7 @@
 					<tablem class = "table-striped">
 						<tr th:each = "u :${interlocutors}">
 							<div>
-			            		<td><a class = "h5" 	th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}"><p th:text = "${u.getFirstname() + ' ' + u.getLastname()}"></p></a></td>
+			            		<td><a class = "h5" th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}"><p th:text = "${u.getFirstname() + ' ' + u.getLastname()}"></p></a></td>
 			            	</div>
 			            </tr>
 					</table>
@@ -31,13 +32,21 @@
 									
 									<th>
 										<td> <p class  ="h6" th:text = "${message.getOwner().getFirstname() + ' ' + message.getOwner().getLastname() + ': '}"></p></td>
-									</th>
-						            <th>
 						                <td> <p class = "h6" th:text="${message.content.get()}"></p></td>
-						            </th>
-						            <th>
 						            	<td> <p class = "h6" th:text="'Date: ' + ${message.getDate()}"></p></td>
 						            </th>
+						            <th th:if = "${message.getBooking() != null}">
+										<td><p class = "h6" th:text = "${message.getBooking().orElseThrow().getStatus()}"></p></td>
+										<td th:if = "${(message.getBooking().orElseThrow().house.owner.id == currentId)}">
+											<div th:if = "${message.getBooking().orElseThrow().status.PENDING}">
+												<form id = "booking-form" method = "post" action = "@{/api/bookings/{id}(id = ${message.getBooking().orElseThrow().id})}">
+													<input type = "text" id = "status" name = "status" value = "ACCEPTED" hidden>
+													<button type = "Submit">Accept</button>
+												</form>
+												<button>Refuse</button>
+											</div>
+										</td>
+									</th>
 					            </div>
 				            </tr>
 				            
@@ -47,6 +56,7 @@
 				    	<h2 class = "text.center">Start a Conversation</h2>
 				    </div>
 				    <div  th:if="${secondId != null and secondId != currentId}">
+
 						<form id="new-message" th:action="@{/api/messages/inbox/{id}(id = ${secondId})}" method = "post">
 					        <div>
 					        	<h2 class = "text-center" th:text = "'Send a message to '+${recipient.getFirstname()}"></h2>
