@@ -30,9 +30,9 @@ public class MessageRepositoryController {
 	private MessageRepository repository;
 	@Autowired
 	private UserRepository UserRepo;
-	
 
-	
+
+
 
 	@RequestMapping(path = "/inbox")
 	public String getMessages(
@@ -45,31 +45,27 @@ public class MessageRepositoryController {
 			model.addAttribute("currentId",currentId);
 			return "/inbox";
 	}
-	
+
 	@RequestMapping(path = "/inbox/{id}")
 	public String getConversation(
 		@PathVariable Integer id,
 		Model model
 	) {
-		
 		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Integer currentId = currentUser.getId();
-		User recipient = UserRepo.findById(id).orElseThrow();
-		Iterable<Message> conversation = repository.findConversation(currentUser, recipient);
+		User interlocutor = UserRepo.findById(id).orElseThrow();
+		Iterable<Message> conversation = repository.findConversation(currentUser, interlocutor);
 		Iterable<User> interlocutors = repository.findUsers(currentUser);
 		model.addAttribute("interlocutors", interlocutors);
 		model.addAttribute("conversation", conversation);
-		model.addAttribute("secondId",id);
-		model.addAttribute("currentId",currentId);
-		model.addAttribute("recipient",recipient);
+		model.addAttribute("currentUser", currentUser);
+		model.addAttribute("interlocutor", interlocutor);
 		return "/inbox";
-		
 	}
-	
-	
-	@PostMapping(value = "inbox/{id}")
-	public RedirectView addMessage(
-			@PathVariable Integer id,
+
+
+	@PostMapping(value = "inbox/")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Message addMessage(
 			@RequestParam ("content") String content,
 			@RequestParam ("recipient") Integer recipient
 			) {
@@ -78,13 +74,11 @@ public class MessageRepositoryController {
 		User recipientUser = UserRepo.findById(recipient).orElseThrow();
 		User senderUser = UserRepo.findById(senderId).orElseThrow();
 		Message message = new Message(senderUser, recipientUser, content,null);
-		repository.save(message);
-		return new RedirectView(id.toString());
-	
+		return repository.save(message);
 	}
 
-	
-	
+
+
 	@DeleteMapping(path = "/{id}")
 	public void deleteMessage(
 		@PathVariable Integer id

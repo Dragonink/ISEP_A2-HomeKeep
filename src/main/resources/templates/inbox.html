@@ -1,73 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-	 <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
-    <title>HomeKeep</title>
+<head>
+    <!--/*/ <th:block th:include="global :: head"></th:block> /*/-->
+    <title>Inbox</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}">
-    <script type="text/javascript" th:src="@{/js/messages.js}"></script>
-	</head>
-	<body>
-		<header th:replace="global :: header"></header>
-		<div class = "container">
-			<div class = "row">
-				<div class = "col-sm">
-					<h2 class = "text-center"> Inbox </h2>
-
-					<tablem class = "table-striped">
-						<tr th:each = "u :${interlocutors}">
-							<div>
-			            		<td><a class = "h5" th:href = "@{/api/messages/inbox/{id}(id = ${u.getId()})}"><p th:text = "${u.getFirstname() + ' ' + u.getLastname()}"></p></a></td>
-			            	</div>
-			            </tr>
-					</table>
-				
-				</div>
-				<div class = "col-sm">
-					
-				    <div>
-				    	<table>
-				    		<h2 th:if= "${secondId != null and secondId != currentId}"  class = "text-center" th:text = "'Conversation with '+${recipient.getFirstname()}"></h2>	
-							<tr th:each="message : ${conversation}">
-								<div class = "container">
-									
-									<th>
-										<td> <p class  ="h6" th:text = "${message.getOwner().getFirstname() + ' ' + message.getOwner().getLastname() + ': '}"></p></td>
-						                <td> <p class = "h6" th:text="${message.content.get()}"></p></td>
-						            	<td> <p class = "h6" th:text="'Date: ' + ${message.getDate()}"></p></td>
-						            </th>
-						            <th th:if = "${message.getBooking() != null}">
-										<td><p class = "h6" th:text = "${message.getBooking().orElseThrow().getStatus()}"></p></td>
-										<td th:if = "${(message.getBooking().orElseThrow().house.owner.id == currentId)}">
-											<div th:if = "${message.getBooking().orElseThrow().status.PENDING}">
-												<form id = "booking-form" method = "post" action = "@{/api/bookings/{id}(id = ${message.getBooking().orElseThrow().id})}">
-													<input type = "text" id = "status" name = "status" value = "ACCEPTED" hidden>
-													<button type = "Submit">Accept</button>
-												</form>
-												<button>Refuse</button>
-											</div>
-										</td>
-									</th>
-					            </div>
-				            </tr>
-				            
-						</table>
-				    </div>
-				    <div th:unless="${secondId != null and secondId != currentId}">
-				    	<h2 class = "text.center">Start a Conversation</h2>
-				    </div>
-				    <div  th:if="${secondId != null and secondId != currentId}">
-
-						<form id="new-message" th:action="@{/api/messages/inbox/{id}(id = ${secondId})}" method = "post">
-					        <div>
-					        	<h2 class = "text-center" th:text = "'Send a message to '+${recipient.getFirstname()}"></h2>
-					      		<input type = "hidden" id = "recipient" name = "recipient" th:value = ${secondId} >
-					        	<input type = "text" id = "content" name = "content" required>
-					            <button type="submit">Send</button>
-					        </div>
-				        </form>
-				    </div>
-				</div>
-			</div>
-		</div>
-	</body>
+    <script type="text/javascript" th:src="@{/js/inbox.js}"></script>
+    <style>
+        html, body {height:100%;}
+    </style>
+</head>
+<body>
+<header th:replace="global :: header"></header>
+<div class="container h-75">
+    <div class="row h-100">
+        <div class="card col h-100">
+            <h2 class="text-center p-1">Discussions</h2>
+            <!--/*@thymesVar id="user" type="isep.webtechnologies.homekeep.models.user.User"*/-->
+            <a class="h5 btn btn-info" th:each="user :${interlocutors}"
+               th:href="@{/api/messages/inbox/{id}(id = ${user.id})}"
+               th:text="${user.firstname + ' ' + user.lastname}"></a>
+        </div>
+        <div class="card col h-100" th:if="${interlocutor!=currentUser}">
+            <h2 class="text-center p-1" th:text="'Conversation with '+${interlocutor.firstname}"></h2>
+            <div th:each="message : ${conversation}">
+                <!--/*@thymesVar id="message" type="isep.webtechnologies.homekeep.models.user.Message"*/-->
+                <div th:unless="${message.booking.isPresent()}" th:text="${message.content.orElse('')}"
+                     data-toggle="tooltip" th:title="${#dates.format(message.date, 'dd/MM/yyyy HH:mm')}"
+                     class="rounded text-white py-1 px-2 my-1"
+                     th:classappend="${message.owner==interlocutor}?'float-left bg-secondary':'float-right bg-primary'">
+                </div>
+                <div class="bg-warning rounded py-1 px-2 my-1 text-center text-white"
+                     th:if="${message.booking.isPresent() and message.booking.get().status == message.booking.get().status.PENDING}">
+                    <span th:text="${interlocutor.firstname}"></span>
+                    <span> wants to book </span>
+                    <span th:text="${message.booking.get().house.title}"></span>
+                    <span> from </span>
+                    <span th:text="${#dates.format(message.booking.get().endDate, 'dd/MM/yyyy')}"></span>
+                    <span> to </span>
+                    <span th:text="${#dates.format(message.booking.get().endDate, 'dd/MM/yyyy')}"></span>
+                    <div class="row p-1">
+                        <form class="booking-status-form col"
+                              th:action="@{'/api/bookings/'+${message.booking.get().id}}">
+                            <input type="text" name="status" value="ACCEPTED" hidden>
+                            <button class="btn btn-primary" type="Submit">Accept <span class="fa fa-check"></span>
+                            </button>
+                        </form>
+                        <form class="booking-status-form col"
+                              th:action="@{'/api/bookings/'+${message.booking.get().id}}">
+                            <input type="text" name="status" value="DENIED" hidden>
+                            <button class="btn btn-danger" type="Submit">Deny <span class="fa fa-times"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <form id="new-message-form" th:action="@{'/api/messages/inbox/'}" class="p-2">
+                <input type="hidden" id="recipient" name="recipient" th:value="${interlocutor.id}">
+                <div class="row">
+                    <input class="form-control col-9" type="text" name="content" required>
+                    <button class="btn btn-primary col-3" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
 </html>
