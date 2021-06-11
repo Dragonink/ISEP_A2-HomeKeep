@@ -2,6 +2,9 @@ $(document).ready(function () {
     $('#house-form').submit(function (e) {
         submitForm(e);
     });
+    $(".input-daterange").datepicker({
+        format: 'dd/mm/yyyy'
+    })
 });
 
 function submitForm(e) {
