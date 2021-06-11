@@ -34,7 +34,7 @@ public class MessageRepositoryController {
 
 
 
-	@RequestMapping(path = "/inbox")
+	@GetMapping(path = "/inbox")
 	public String getMessages(
 			Model model
 		) {
@@ -46,7 +46,7 @@ public class MessageRepositoryController {
 			return "/inbox";
 	}
 
-	@RequestMapping(path = "/inbox/{id}")
+	@GetMapping(path = "/inbox/{id}")
 	public String getConversation(
 		@PathVariable Integer id,
 		Model model
@@ -63,7 +63,7 @@ public class MessageRepositoryController {
 	}
 
 
-	@PostMapping(value = "inbox/")
+	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public Message addMessage(
 			@RequestParam ("content") String content,

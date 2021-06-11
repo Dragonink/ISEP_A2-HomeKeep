@@ -43,10 +43,9 @@ function submitMessageForm(e) {
         }
     }).then(
         () => {
-            alert("Message sent") //TODO removable since we are reloading
             location.reload()
         }
     ).catch((e) => {
-        alert(e)
+        location.reload()
     })
 }
