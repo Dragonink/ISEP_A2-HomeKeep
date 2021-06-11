@@ -10,7 +10,7 @@
     <h1 class="center">My bookings</h1>
     <div th:if="${bookings!=null}">
         <!--/*@thymesVar id="booking" type="isep.webtechnologies.homekeep.models.house.HouseBooking"*/-->
-        <div th:each="booking : ${bookings}" class="card border row m-3"
+        <div th:each="booking : ${bookings}" th:unless="${booking.isAvailable}" class="card border row m-3"
              th:classappend="${(booking.status == booking.status.ACCEPTED ? 'border-success':'')
                              + (booking.status == booking.status.PENDING ? 'border-warning':'')
                              + (booking.status == booking.status.DENIED ? 'border-danger':'')}">
