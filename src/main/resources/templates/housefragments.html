@@ -47,7 +47,7 @@
     <div th:unless="${house.getImages.isEmpty}" class="carousel-inner">
         <div th:each="image, iterStat: ${house.getImages}"
              class="carousel-item"
-             th:classappend="${iterStat.index}== 0  ? '':'active'">
+             th:classappend="${iterStat.index}== 0  ? 'active':''">
             <img th:src="@{'/api/houseimages/image/'+${image.getId}}" class="d-block img-responsive">
         </div>
     </div>
